@@ -1,0 +1,5 @@
+1. Use proper Eanglish for documentation;
+2. Сделать depends on в документации для Chassis
+3. Сделать proper eanglish в документации для Chassis
+4. Проверить все
+5. Error list

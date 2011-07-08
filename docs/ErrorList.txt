@@ -1,0 +1,433 @@
+DB classes (1101 - 1nnn)
+========================
+
+plcMySQLDBConnector (1101 - 11nn)
+
+1101
+User does not provided server name.
+Cannot connect to unknown server.
+
+1102
+User does not provided user name.
+Cannot connect to data base without specified user.
+
+1103
+User does not provided password.
+Cannot connect to data base without specified password.
+
+1104
+Query to data base is not set.
+Query to data base must be set before calling any function for data retrieving.
+
+1105
+Error while executing query.
+"SQL error:".$this->LastErrorNumber." - ".$this->LastErrorText
+
+1106
+'autocommit' server variable does not exist.
+SQL server has no 'autocommit' variable.
+
+1107
+Can not escape user string.
+User string is ither empty or invalid.
+
+1108
+Could not connect to database.
+Server name, user name or password is incorrect.
+
+1109
+Connection to data base does not exist.
+Connection to data base does not exist or wrong server.
+
+1110
+Can not return result for this type of query.
+The function is not supporting such query type.
+
+1111
+User does not provided data base name.
+Cannot select data base without specifying data base name.
+
+1112
+Could not select data base.
+Some internal error occurred. Check that Server name, user name or password are correct.
+
+1113
+Can not move data pointer to next/prev row.
+Can not move data pointer - result set is not buffered yet.
+
+1114
+Can not return result row.
+Can not return result row - result set is not buffered yet.
+
+1115
+Can not move field pointer to next/prev field.
+Can not move field pointer - result set is not buffered yet.
+
+1116
+Can not get field data.
+Can not get field data - result set is not buffered yet.
+
+1117
+Can not get field name.
+Can not get field name - result set is not buffered yet.
+
+1118
+Can not get field length.
+Can not get field length - result set is not buffered yet.
+
+plcMySQLDIBConnector (1201 - 12nn)
+
+1201
+User does not provided server name.
+Cannot connect to unknown server.
+
+1202
+User does not provided user name.
+Cannot connect to data base without specified user.
+
+1203
+User does not provided password.
+Cannot connect to data base without specified password.
+
+1204
+Query to data base is not set.
+Query to data base must be set before calling any function for data retrieving.
+
+1205
+Error while executing query.
+"SQL error:".$this->LastErrorNumber." - ".$this->LastErrorText
+
+1206
+'autocommit' server variable does not exist.
+SQL server has no 'autocommit' variable.
+
+1207
+Can not escape user string.
+User string is ither empty or invalid.
+
+1208
+Could not connect to database.
+Server name, user name or password is incorrect.
+
+1209
+Connection to data base does not exist.
+Connection to data base does not exist or wrong server.
+
+1210
+Can not return result for this type of query.
+The function is not supporting such query type.
+
+1211
+User does not provided data base name.
+Cannot select data base without specifying data base name.
+
+1212
+Could not select data base.
+Some internal error occurred. Check that Server name, user name or password are correct.
+
+1213
+Could not initialize MYSQLI statement.
+Some internal error occurred. Could not initialize MYSQLI statement.
+
+1214
+Query that must be prepared is not set.
+Query to data base must be set before it can be prepared.
+
+1215
+Error while preparation of the query.
+'MySQLI statement error:'.$this->MYSQLIStmtObj->errno.' - '.$this->MYSQLIStmtObj->error
+
+1216
+Error while setting parameteres for preparation of the SQL query.
+First parameter must be a string that represents types of other parametres.
+
+1217
+Error while setting parameteres for preparation of the SQL query.
+Number of parameters types (from a string) does not match actual parameters number.
+
+1218
+Error while setting parameteres for preparation of the SQL query.
+'There is no such type as "'.$tmpSplitString[$Counter1].'".'
+
+1219
+Error while setting parameteres for preparation of the SQL query.
+'Type mismatch on '.($Counter1+1).' parameter, for query: '.$this->PrepQuery.'.'
+
+1220
+Error while preparation of the query.
+Can not bind user parameters.
+
+1221
+Error while execution of the query.
+Can not bind result variables.
+
+1222
+Can not get table field names from result.
+'MySQLI statement error:'.$this->MYSQLIStmtObj->errno.' - '.$this->MYSQLIStmtObj->error
+
+1224
+Error while execution of the query.
+'MySQLI statement error:'.$this->MYSQLIStmtObj->errno.' - '.$this->MYSQLIStmtObj->error
+
+plcSQLiteDBConnector (1301 - 13nn)
+
+1301
+Invalid file name.
+User provided emtpy filename or it is not of string type.
+
+1302
+Database file name is not set yet.
+You must first set database file before feature actions.
+
+1303
+Database file is not exist.
+'Database file: "'.$this->DBFilePath.'" does not exist.'
+
+1304
+Database file is not readable.
+'Database file: "'.$this->DBFilePath.'" is not readable.'
+
+1305
+Database file is not writable.
+Database file: "'.$this->DBFilePath.'" is not writable.
+
+1306
+Could not connect to database.
+'File name, file open mode or encryption key is incorrect ('.$tmpErrorMessage.').'
+
+1307
+Connection to data base does not exist.
+Connection to data base does not exist or wrong server.
+
+1308
+Query to data base is not set.
+Query to data base must be set before calling any function for data retrieving.
+
+1309
+Error while executing query.
+'SQL error:'.$this->LastErrorNumber.' - '.$this->LastErrorText
+
+1310
+Can not return result for this type of query.
+The function is not supporting such query type.
+
+1311
+Can not change database open mode.
+Connection to database is already open, can not change open mode.
+
+1312
+Invalid file name.
+User provided emtpy filename or it is not of string type.
+
+plcSQLite3DBConnector (1401 - 14nn)
+
+1401
+Invalid file name.
+User provided emtpy filename or it is not of string type.
+
+1402
+Database file name is not set yet.
+You must first set database file before feature actions.
+
+1403
+Database file is not exist.
+'Database file: "'.$this->DBFilePath.'" does not exist.'
+
+1404
+Database file is not readable.
+'Database file: "'.$this->DBFilePath.'" is not readable.'
+
+1405
+Database file is not writable.
+'Database file: "'.$this->DBFilePath.'" is not writable.'
+
+1406
+Could not connect to database.
+File name, file open mode or encryption key is incorrect.
+
+
+
+Error log classes (3101 - 3nnn)
+===============================
+
+plcErrorLogSimple (3101 - 31nn)
+
+3101
+Log directory is not a directory
+'Directory '.$usrDir.' is not a directory.'
+
+3102
+Log directory is not writable.
+'Directory '.$usrDir.' is not writable.'
+
+plcErrorLogException (3201 - 32nn)
+
+3201
+Log directory is not a directory
+'Directory '.$usrDir.' is not a directory.'
+
+3202
+Log directory is not writable.
+'Directory '.$usrDir.' is not writable.'
+
+Session handle classes (4101 - 4nnn)
+====================================
+
+plcCookieDBSmplSecure (4101 - 41nn)
+
+4101
+Database object is not set.
+Database object is not set or empty.
+
+4102
+Session table does not specified.
+Session table does not specified or empty.
+
+4103
+Session id is not created.
+Session id is empty, thus encode fails.
+
+4104
+Dump directory is not a directory.
+'Directory '.$this->OldSessionDumpFolder.' is not a directory.'
+
+4105
+Dump directory is not writable.
+'Directory '.$this->OldSessionDumpFolder.' is not writable.'
+
+4106
+Can not append old session dump to a file.
+'Old session dump file '.$this->OldSessionDumpFolder.'\\'.$tmpFileName.' is not writable.'
+
+4107
+Can not create old session dump file.
+'Can not create old session dump file - '.$this->OldSessionDumpFolder.'\\'.$tmpFileName
+
+4108
+Old session dump folder is not set.
+Object can not make old sessions recorcds dump to log file. Old session records will be lost forever.
+
+ImageManipulation (5101 - 5nnn)
+===============================
+
+plcImgSmplManipulator (5101 - 51nn)
+
+
+5101
+File does not exist.
+'File "'.$usrFileName.'" does not exist.'
+
+5102
+File is not readable.
+'File "'.$usrFileName.'" is not readable.'
+
+5103
+File is not writable.
+'File "'.$usrFileName.'" is not writable.'
+
+5104
+User does not specified width.
+Width parametre is not specified or empty.
+
+5105
+User does not specified height.
+Height parametre is not specified or empty.
+
+5106
+Image file name has no extension.
+'Image file name "'.$usrFileName.'" have no extension.'
+
+5107
+Unrecognized file extension.
+'Unrecognized file extension - "'.$tmpImgExtension.'" .'
+
+5108
+Can not create image resource.
+'Can not create image resource for filename: '.$usrFileName.' .'
+
+5109
+Can not create resized image copy.
+'Can not create resized image copy from '.$usrFileName.' to '.$usrNewFileName.' .'
+
+5110
+Can not write JPG file.
+'Can not create JPG file - '.$usrFileName.' .'
+
+5111
+Can not write GIF file.
+'Can not create GIF file - '.$usrFileName.' .'
+
+5112
+Can not write PNG file.
+'Can not create PNG file - '.$usrFileName.' .'
+
+5113
+Invalid PNG quality value.
+'Invalid PNG quality value - '.$usrQuality.' .'
+
+5114
+Invalid JPG quality value.
+'Invalid JPG quality value - '.$usrQuality.' .'
+
+5115
+User does not specified maximum width.
+Maximum width parametre is not specified or empty.
+
+5116
+User does not specified maximum height.
+Maximum height parametre is not specified or empty.
+
+Encription classes (8101 - 8nnn)
+================================
+
+plcEncoderMD5  (8101 - 81nn)
+
+8101
+Prepared data is absent.
+Data for encoding process is not yet set.
+
+XML classes (9101 - 9nnn)
+=========================
+
+plcXMLParserHelper (9101 - 91nn)
+
+9101
+Xml file does not exist.
+'Could not find "'.$usrFile.'" file.'
+
+9102
+Xml file is not readable.
+'Could not read "'.$usrFile.'" file.'
+
+9103
+Error occured during xml file read.
+'Error occured during reading of "'.$usrFile.'" file. Could not proceed feature.'
+
+9104
+Could not save XML file.
+'Error occured during saving of "'.$usrFile.'" file.'
+
+9105
+XML file save path is not specified.
+User does not provide XML file save path, could not save current changes.
+
+9106
+XML document object is not created yet.
+Can not proceed without XML document object.
+
+Data minning classes (10101 - 10nnn)
+====================================
+
+plcASCIIENTextList (10101 - 101nn)
+
+10101
+Invalid user text.
+User provided none-text data.
+
+10102
+Zero-length text.
+Usert provided zero-length text.
+
+10103
+Invalid search key.
+User provided invalid search key or it is empty.

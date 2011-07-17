@@ -3,3 +3,6 @@
 3. Сделать proper eanglish в документации для Chassis
 4. Проверить все
 5. Error list
+6. Fix CMYK to RGB in pdf
+7. Write manual for pdf
+8. Make file class work with standart exeptions

@@ -11,4 +11,4 @@ set_include_path(implode(PATH_SEPARATOR, array(realpath(DOC_ROOT.'/Chassis/libra
 SYSTEM REQUIREMENTS
 -------------------
 
-Chassis Framework requires PHP 5 or later.
+Chassis Framework requires PHP 5 or higher.

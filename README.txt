@@ -8,7 +8,7 @@ Released on July 06, 2011.
 SYSTEM REQUIREMENTS
 -------------------
 
-Chassis Framework requires PHP 5 or later.
+Chassis Framework requires PHP 5 or higher.
 
 INSTALLATION
 ------------

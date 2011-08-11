@@ -185,10 +185,10 @@ class plcMySQLDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnector
 			throw new plcChassisException('User does not provided user name.', 1102, null ,'Cannot connect to data base without specified user.');
 			}
 
-		if (empty($usrPassword))
+		/*if (empty($usrPassword))
 			{
 			throw new plcChassisException('User does not provided password.', 1103, null ,'Cannot connect to data base without specified password.');
-			}
+			}  */
 		
 		$this->DBServerName = $usrServer;
 		$this->DBUserName = $usrUser;

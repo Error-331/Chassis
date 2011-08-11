@@ -6,7 +6,7 @@ extract it to the folder you would like to keep it in, and add the library direc
 to your PHP include_path:
 
 defined('DOC_ROOT') || define('DOC_ROOT', realpath(dirname(__FILE__)));
-set_include_path(implode(PATH_SEPARATOR, array(realpath(DOC_ROOT.'/Chassis/library/'), get_include_path())));
+set_include_path(implode(PATH_SEPARATOR, array(realpath(DOC_ROOT.'/library/'), get_include_path())));
 
 SYSTEM REQUIREMENTS
 -------------------

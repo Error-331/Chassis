@@ -194,10 +194,10 @@ class plcMySQLIDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnecto
 			throw new plcChassisException('User does not provided user name.', 1202, null ,'Cannot connect to data base without specified user.');
 			}
 
-		if (empty($usrPassword))
+		/*if (empty($usrPassword))
 			{
 			throw new plcChassisException('User does not provided password.', 1203, null ,'Cannot connect to data base without specified password.');
-			}
+			}  */
 		
 		$this->DBServerName = $usrServer;
 		$this->DBUserName = $usrUser;
@@ -336,7 +336,7 @@ class plcMySQLIDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnecto
           }
         }
         
-      $tmpBindParams = '$this->MYSQLIStmtObj->bind_param('.$this->PrepQueryParams[0].','.$tmpBindParams.');';
+      $tmpBindParams = '$this->MYSQLIStmtObj->bind_param("'.$this->PrepQueryParams[0].'",'.$tmpBindParams.');';
       $tmpResult = eval($tmpBindParams); 
       
       if ($tmpResult === FALSE)

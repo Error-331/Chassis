@@ -1,0 +1,100 @@
+plcMySQLDBTableDataGateway tutorial
+===================================
+
+Insert example
+--------------
+
+$tmpDBConnector = plcMySQLIDBConnector::GetInstance();
+$tmpDBConnector->ConnectToDB('localhost', 'root', '');
+$tmpDBConnector->SetDatabaseName('alionpay');
+
+$tmpATable = new plcMySQLDBTableDataGateway($tmpDBConnector, 'aiop_api_request', array('id', 'deal_id'));
+
+$tmpData = array(
+                'post' => 'POST DATA',
+                'get' => 'param=test',
+                'deal_id' => 1
+                );
+
+$tmpATable->Insert($tmpData);
+
+Update example(1)
+-----------------
+
+$tmpDBConnector = plcMySQLIDBConnector::GetInstance();
+$tmpDBConnector->ConnectToDB('localhost', 'root', '');
+$tmpDBConnector->SetDatabaseName('alionpay');
+
+$tmpATable = new plcMySQLDBTableDataGateway($tmpDBConnector, 'aiop_api_request', array('id', 'deal_id'));
+
+$tmpData = array(
+                'post' => 'NEW_POST',
+                'deal_id' => 100500
+                );
+
+$tmpATable->Update($tmpData, 'info != ?', array("Error: 501"));
+
+Update example(2)
+-----------------
+
+$tmpDBConnector = plcMySQLIDBConnector::GetInstance();
+$tmpDBConnector->ConnectToDB('localhost', 'root', '');
+$tmpDBConnector->SetDatabaseName('alionpay');
+
+$tmpATable = new plcMySQLDBTableDataGateway($tmpDBConnector, 'aiop_api_request', array('id', 'deal_id'));
+
+$tmpData = array(
+                'post' => 'NEW_POST',
+                'deal_id' => 331
+                );
+
+$tmpATable->Update($tmpData, 'id = ?', array("8"));
+
+Delete example
+--------------
+
+$tmpDBConnector = plcMySQLIDBConnector::GetInstance();
+$tmpDBConnector->ConnectToDB('localhost', 'root', '');
+$tmpDBConnector->SetDatabaseName('alionpay');
+
+$tmpATable = new plcMySQLDBTableDataGateway($tmpDBConnector, 'aiop_api_request', array('id', 'deal_id'));
+
+$tmpData = array(
+                'post' => 'NEW_POST',
+                'deal_id' => 331
+                );
+
+$tmpATable->Delete('deal_id = ? AND info = ?', array(4, "Test info"));
+
+Find example
+------------
+
+$tmpDBConnector = plcMySQLIDBConnector::GetInstance();
+$tmpDBConnector->ConnectToDB('localhost', 'root', '');
+$tmpDBConnector->SetDatabaseName('alionpay');
+
+$tmpATable = new plcMySQLDBTableDataGateway($tmpDBConnector, 'aiop_api_request', 'id');
+
+$tmpResults = $tmpATable->Find(1);
+
+Find (assoc) example(1)
+-----------------------
+
+$tmpDBConnector = plcMySQLIDBConnector::GetInstance();
+$tmpDBConnector->ConnectToDB('localhost', 'root', '');
+$tmpDBConnector->SetDatabaseName('alionpay');
+
+$tmpATable = new plcMySQLDBTableDataGateway($tmpDBConnector, 'aiop_api_request', array('id', 'deal_id'));
+
+$tmpResults = $tmpATable->FindAssoc(array(4, 3));
+
+Find (assoc) example(2)
+-----------------------
+
+$tmpDBConnector = plcMySQLIDBConnector::GetInstance();
+$tmpDBConnector->ConnectToDB('localhost', 'root', '');
+$tmpDBConnector->SetDatabaseName('alionpay');
+
+$tmpATable = new plcMySQLDBTableDataGateway($tmpDBConnector, 'aiop_api_request', 'id');
+
+$tmpResults = $tmpATable->FindAssoc(1);

@@ -270,6 +270,7 @@ class plcMySQLIDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnecto
    * @see plcMySQLIDBConnector::GetPrepResult()
    * @see plcMySQLIDBConnector::SetPrepQuery()
    * @see plcMySQLIDBConnector::SetPrepQueryParams()
+   * @see plcMySQLIDBConnector::SetPrepQueryParamsArr()
    *                              
    */ 
     
@@ -370,7 +371,8 @@ class plcMySQLIDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnecto
    * @see plcMySQLIDBConnector::GetPrepResultRow()
    * @see plcMySQLIDBConnector::GetPrepResult()
    * @see plcMySQLIDBConnector::SetPrepQuery()
-   * @see plcMySQLIDBConnector::SetPrepQueryParams()      
+   * @see plcMySQLIDBConnector::SetPrepQueryParams()
+   * @see plcMySQLIDBConnector::SetPrepQueryParamsArr()      
    *                               
    */ 
     
@@ -476,7 +478,8 @@ class plcMySQLIDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnecto
    * @see plcMySQLIDBConnector::GetPrepResultRow()
    * @see plcMySQLIDBConnector::GetPrepResult()
    * @see plcMySQLIDBConnector::SetPrepQuery()
-   * @see plcMySQLIDBConnector::SetPrepQueryParams()      
+   * @see plcMySQLIDBConnector::SetPrepQueryParams() 
+   * @see plcMySQLIDBConnector::SetPrepQueryParamsArr()     
    *                               
    */ 
     
@@ -1103,6 +1106,7 @@ class plcMySQLIDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnecto
    * @see plcMySQLIDBConnector::GetPrepResult()
    * @see plcMySQLIDBConnector::SetPrepQuery()
    * @see plcMySQLIDBConnector::SetPrepQueryParams()
+   * @see plcMySQLIDBConnector::SetPrepQueryParamsArr()
    *                                            
    */ 
 		
@@ -1128,7 +1132,8 @@ class plcMySQLIDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnecto
    * @see plcMySQLIDBConnector::GetPrepResultRow()
    * @see plcMySQLIDBConnector::GetPrepResult()
    * @see plcMySQLIDBConnector::SetPrepQuery()
-   * @see plcMySQLIDBConnector::SetPrepQueryParams()   
+   * @see plcMySQLIDBConnector::SetPrepQueryParams()  
+   * @see plcMySQLIDBConnector::SetPrepQueryParamsArr() 
    *                                       
    */ 
     
@@ -1160,6 +1165,7 @@ class plcMySQLIDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnecto
    * @see plcMySQLIDBConnector::GetPrepResult()
    * @see plcMySQLIDBConnector::SetPrepQuery()
    * @see plcMySQLIDBConnector::SetPrepQueryParams()
+   * @see plcMySQLIDBConnector::SetPrepQueryParamsArr()
    *                                
    */ 
   
@@ -1245,7 +1251,8 @@ class plcMySQLIDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnecto
    * @see plcMySQLIDBConnector::GetPrepResultAssoc()
    * @see plcMySQLIDBConnector::GetPrepResult()
    * @see plcMySQLIDBConnector::SetPrepQuery()
-   * @see plcMySQLIDBConnector::SetPrepQueryParams()      
+   * @see plcMySQLIDBConnector::SetPrepQueryParams()  
+   * @see plcMySQLIDBConnector::SetPrepQueryParamsArr()    
    *                              
    */ 
     
@@ -1328,7 +1335,8 @@ class plcMySQLIDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnecto
    * @see plcMySQLIDBConnector::GetPrepResultRow()
    * @see plcMySQLIDBConnector::GetPrepResult()
    * @see plcMySQLIDBConnector::SetPrepQuery()
-   * @see plcMySQLIDBConnector::SetPrepQueryParams()         
+   * @see plcMySQLIDBConnector::SetPrepQueryParams() 
+   * @see plcMySQLIDBConnector::SetPrepQueryParamsArr()       
    *                                
    */ 
     
@@ -1577,7 +1585,8 @@ class plcMySQLIDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnecto
    * @see plcMySQLIDBConnector::GetPrepResultAssoc()
    * @see plcMySQLIDBConnector::GetPrepResultRow()
    * @see plcMySQLIDBConnector::GetPrepResult()
-   * @see plcMySQLIDBConnector::SetPrepQueryParams()             
+   * @see plcMySQLIDBConnector::SetPrepQueryParams() 
+   * @see plcMySQLIDBConnector::SetPrepQueryParamsArr()            
    *                                  
    */ 
 		
@@ -1593,7 +1602,9 @@ class plcMySQLIDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnecto
    * 
    * @access public
    * 
-   * @throws plcChassisException        
+   * @throws plcChassisException 
+   * 
+   * @return bool returns TRUE on succes and FALSE on error.       
    *
    * @param mixed ... parameters for current query, if first parameter is set to NULL - no parameters will be used
    * while preparation of the query. First parameter to the function must be string that represents type of of other
@@ -1608,6 +1619,7 @@ class plcMySQLIDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnecto
    * @see plcMySQLIDBConnector::GetPrepResult()
    * @see plcMySQLIDBConnector::SetPrepQuery()
    * @see plcMySQLIDBConnector::SetPrepQueryParams()
+   * @see plcMySQLIDBConnector::SetPrepQueryParamsArr()
    *                                     
    */ 
 		
@@ -1696,6 +1708,102 @@ class plcMySQLIDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnecto
         }        
       }
     }
+       
+  /**
+   * Function that used to set parameters (in form of array) for current query that will be prepared before use.
+   * 
+   * Simple function that sets parameters (in form of array for current query to the database that will be prepared before use. 
+   * 
+   * @access public
+   * 
+   * @throws plcChassisException   
+   * 
+   * @return bool returns TRUE on succes and FALSE on error.    
+   *
+   * @param string First parameter to the function must be string that represents type of of other
+   * parameters it must only contain following letters: i, d, s, b.
+   * @param array of values that corresponds to datatypes set in first param.            
+   *   
+   * @see plcMySQLIDBConnector::PrepareQuery() 
+   * @see plcMySQLIDBConnector::ExecutePrepGetQuery()
+   * @see plcMySQLIDBConnector::ExecutePrepQuery()
+   * @see plcMySQLIDBConnector::GetPrepQuery()
+   * @see plcMySQLIDBConnector::GetPrepResultAssoc()
+   * @see plcMySQLIDBConnector::GetPrepResultRow()
+   * @see plcMySQLIDBConnector::GetPrepResult()
+   * @see plcMySQLIDBConnector::SetPrepQuery()
+   * @see plcMySQLIDBConnector::SetPrepQueryParams()
+   * @see plcMySQLIDBConnector::SetPrepQueryParamsArr()
+   *                                     
+   */ 
+		
+public function SetPrepQueryParamsArr($usrTypes = '', $usrParams = array())
+    {  
+    $tmpTypesLen = strlen($usrTypes);
+    $tmpParamsLen = count($usrParams);
+    
+    $tmpSplitString = '';
+    
+    $Counter1 = 0;
+    
+    if(is_string($usrTypes) === FALSE)
+        {
+        throw new plcChassisException('Error while setting parameteres for preparation of the SQL query.', 1216, null , 'First parameter must be a string that represents types of other parametres.');
+        }    
+    
+    if (empty($usrTypes) === TRUE || strlen($usrTypes) <=0 ) {return FALSE;}
+    
+    if ($tmpTypesLen != $tmpParamsLen) 
+        {
+        throw new plcChassisException('Error while setting parameteres for preparation of the SQL query.', 1217, null , 'Number of parameters types (from a string) does not match actual parameters number.');
+        }
+        
+    $tmpSplitString = str_split($usrTypes);
+    
+    for ($Counter1 = 0; $Counter1 < count($tmpSplitString); $Counter1++)
+        {
+        switch($tmpSplitString[$Counter1])
+            {
+            case 'i':
+                
+            if (is_numeric($usrParams[$Counter1]) !== TRUE)
+                {   
+                throw new plcChassisException('Error while setting parameteres for preparation of the SQL query.', 1219, null , 'Type mismatch on '.($Counter1).' parameter, for query: '.$this->PrepQuery.'.');
+                }
+            break;
+                
+            case 'd':
+                
+            if (is_double($usrParams[$Counter1]) !== TRUE)
+               {  
+               throw new plcChassisException('Error while setting parameteres for preparation of the SQL query.', 1219, null , 'Type mismatch on '.($Counter1).' parameter, for query: '.$this->PrepQuery.'.');
+               }               
+            break;
+                
+            case 's':
+                
+            if (is_string($usrParams[$Counter1]) !== TRUE)
+                {  
+                throw new plcChassisException('Error while setting parameteres for preparation of the SQL query.', 1219, null , 'Type mismatch on '.($Counter1).' parameter, for query: '.$this->PrepQuery.'.');
+                }                 
+            break;
+                
+            case 'b':
+                
+            break;
+                
+            default:
+                
+            throw new plcChassisException('Error while setting parameteres for preparation of the SQL query.', 1218, null , 'There is no such type as "'.$tmpSplitString[$Counter1].'".');
+            break;
+            }
+        }
+    
+    array_unshift($usrParams, $usrTypes);    
+        
+    $this->PrepQueryParams = $usrParams;  
+    return TRUE;    
+    }    
 		
 	/* Set functions ends here */
 	}

@@ -245,7 +245,49 @@ Database file is not writable.
 Could not connect to database.
 File name, file open mode or encryption key is incorrect.
 
+plcMySQLDBTableDataGateway (1501 - 15nn)
 
+1501
+Invalid database connector object.
+User provided invalid connector object that do not supports necessary interfaces.
+
+1502
+Invalid table name.
+User provided invalid table name.
+
+1503
+Invalid primary key.
+User provided invalid primary key for current table.
+
+1504
+Could not determine value type.
+User provided invalid variable data to the GetParamTypeLetter() function.
+
+1505
+Invalid arguments count.
+Count of arguments in condition does not much count of values.
+
+plcMySQLDBTableDataGateway (1601 - 16nn)
+
+1601
+Invalid database connector object.
+User provided invalid connector object that do not supports necessary interfaces.
+
+1602
+Invalid table name.
+User provided invalid table name.
+
+1603
+Invalid primary key.
+User provided invalid primary key for current table.
+
+1604
+Invalid primary key value.
+User provided invalid primary key value.
+
+1605
+Could not determine value type.
+User provided invalid variable data to the GetParamTypeLetter() function.
 
 Error log classes (3101 - 3nnn)
 ===============================

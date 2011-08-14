@@ -1,0 +1,28 @@
+plcMySQLDBRowDataGateway tutorial
+===================================
+
+Save example(1)
+---------------
+
+$tmpDBConnector = plcMySQLIDBConnector::GetInstance();
+$tmpDBConnector->ConnectToDB('localhost', 'root', '');
+$tmpDBConnector->SetDatabaseName('alionpay');
+
+$tmpARow = new plcMySQLDBRowDataGateway($tmpDBConnector, 'aiop_api_request', 'id', 1);
+
+$tmpARow->get = 'new get';
+$tmpARow->post = 'new post';
+$tmpARow->Save();
+
+Save example(2)
+---------------
+
+$tmpDBConnector = plcMySQLIDBConnector::GetInstance();
+$tmpDBConnector->ConnectToDB('localhost', 'root', '');
+$tmpDBConnector->SetDatabaseName('alionpay');
+
+$tmpARow = new plcMySQLDBRowDataGateway($tmpDBConnector, 'aiop_api_request', array('id, deal_id'), array(1, 1));
+
+$tmpARow->get = 'get test1';
+$tmpARow->post = 'post test1';
+$tmpARow->Save();

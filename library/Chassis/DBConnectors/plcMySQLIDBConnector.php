@@ -249,6 +249,23 @@ class plcMySQLIDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnecto
      
     return TRUE;    
     }
+   
+    /**
+     * Function that indicates whether current object is connected to the database or not.
+     * 
+     * Simple function that indicates whether object is connected to the database or not.
+     * 
+     * @access public 
+     *        
+     * @return bool returns TRUE if object is connected to the database and FALSE if not.
+     *                         
+     */  
+
+    public function IsConnected()
+        {
+        if (is_null($this->MYSQLIObj) === TRUE) {return FALSE;}
+        else {return TRUE;}
+        }
     
   /**
    * Function that used to prepare SQL query before sending it into database.
@@ -550,40 +567,43 @@ class plcMySQLIDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnecto
 			}
 		}
 		
-  /**
-   * Function that used to close connection to database.
-   * 
-   * Simple function that closes connection with database and free resources for MySQL prepared statemen object.
-   * Note that this function will be automaticly called inside destructor function.
-   * 
-   * @access public 
-   *    
-   * @return bool returns TRUE if function successfuly close connection to database, FALSE if connection to database was not yet established.
-   * 
-   * @see plcMySQLIDBConnector::ConnectToDB()  
-   * @see plcMySQLIDBConnector::ReConnectToDB()                             
-   */ 
+    /**
+     * Function that used to close connection to database.
+     * 
+     * Simple function that closes connection with database and free resources for MySQL prepared statemen object.
+     * Note that this function will be automaticly called inside destructor function.
+     * 
+     * @access public 
+     *    
+     * @return bool returns TRUE if function successfuly close connection to database, FALSE if connection to database was not yet established.
+     * 
+     * @see plcMySQLIDBConnector::ConnectToDB()  
+     * @see plcMySQLIDBConnector::ReConnectToDB()                             
+     */ 
 
-	public function CloseDBLink()
-		{
-		$this->ResultRowCount = 0;
-		$this->ResultFieldCount = 0;
+    public function CloseDBLink()
+        {
+        $this->ResultRowCount = 0;
+        $this->ResultFieldCount = 0;
 		
-		if ($this->MYSQLIStmtObj != NULL)
-		  {
-		  @$this->MYSQLIStmtObj->close();
-      }
-		
-		if ($this->MYSQLIObj != NULL)
-			{
-			@$this->MYSQLIObj->close();
-      return TRUE;	
-			}
-		else
-		  {
-		  return FALSE;
-      }
-		}
+        if ($this->MYSQLIStmtObj != NULL)
+            {
+            @$this->MYSQLIStmtObj->close();
+            $this->MYSQLIStmtObj = NULL;
+            }
+                                 
+        if ($this->MYSQLIObj != NULL)
+            {
+            @$this->MYSQLIObj->close();
+            $this->MYSQLIObj = NULL;
+                    
+            return TRUE;	
+            }
+        else
+            {
+            return FALSE;
+            }            
+        }
 		
   /**
    * Function that used to escape special characters in user defined string.
@@ -760,7 +780,7 @@ class plcMySQLIDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnecto
 			throw new plcChassisException('Connection to data base does not exist.', 1209, null ,'Connection to data base does not exist or wrong server.');
 			}
       
-    $tmpResult = $this->MYSQLIObj->insert_id();
+    $tmpResult = $this->MYSQLIObj->insert_id;
     
     if ($tmpResult === FALSE || $tmpResult == 0)
       {
@@ -1655,7 +1675,7 @@ class plcMySQLIDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnecto
           {
           $tmpParamList[0] = strtolower($tmpParamList[0]);          
           $tmpSplitString = str_split($tmpParamList[0]);
-          
+       
           if (count($tmpSplitString) !=  ($tmpParamCount - 1))
             {
             throw new plcChassisException('Error while setting parameteres for preparation of the SQL query.', 1217, null , 'Number of parameters types (from a string) does not match actual parameters number.');

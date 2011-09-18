@@ -267,7 +267,7 @@ User provided invalid variable data to the GetParamTypeLetter() function.
 Invalid arguments count.
 Count of arguments in condition does not much count of values.
 
-plcMySQLDBTableDataGateway (1601 - 16nn)
+plcMySQLDBRowDataGateway (1601 - 16nn)
 
 1601
 Invalid database connector object.

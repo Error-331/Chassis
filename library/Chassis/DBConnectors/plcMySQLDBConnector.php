@@ -42,171 +42,171 @@ require_once('Chassis/ErrorHandling/plcChassisException.php');
 require_once('Chassis/DBConnectors/Interfaces.php');
 
 class plcMySQLDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnector, pliSmplMYSQLDBConnector, pliSQLBufferedResultIterator
-	{	
-  /**
-   * @access protected
-   * @var object instance of the current class 
-   */		
+    {	
+    /**
+     * @access protected
+     * @var object instance of the current class 
+     */		
   	
-	protected static $CurInstance = NULL; 	
+    protected static $CurInstance = NULL; 	
 	
-  /**
-   * @access protected
-   * @var link MySQL link identifier 
-   */	
+    /**
+     * @access protected
+     * @var link MySQL link identifier 
+     */	
 	
-	protected $DBLink = NULL;
+    protected $DBLink = NULL;
 	
-  /**
-   * @access protected
-   * @var string database server name 
-   */	
+    /**
+     * @access protected
+     * @var string database server name 
+     */	
 	
-	protected $DBServerName = NULL;
+    protected $DBServerName = NULL;
 	
-  /**
-   * @access protected
-   * @var string database user name 
-   */	
+    /**
+     * @access protected
+     * @var string database user name 
+     */	
 
-	protected $DBUserName = NULL;
+    protected $DBUserName = NULL;
 	
-  /**
-   * @access protected
-   * @var string database user password 
-   */	
+    /**
+     * @access protected
+     * @var string database user password 
+     */	
 	
-	protected $DBPassword = NULL;
+    protected $DBPassword = NULL;
 	
-  /**
-   * @access protected
-   * @var string database name 
-   */	
+    /**
+     * @access protected
+     * @var string database name 
+     */	
 
-	protected $DBName = NULL;
+    protected $DBName = NULL;
 	
-  /**
-   * @access protected
-   * @var string current query to database 
-   */	
+    /**
+     * @access protected
+     * @var string current query to database 
+     */	
 	
-	protected $Query = NULL;
+    protected $Query = NULL;
 	
-  /**
-   * @access protected
-   * @var string last error number occured during query execution 
-   */	
+    /**
+     * @access protected
+     * @var string last error number occured during query execution 
+     */	
 
-	protected $LastErrorNumber = 0;
+    protected $LastErrorNumber = 0;
 	
-  /**
-   * @access protected
-   * @var string last error text occured during query execution 
-   */	
+    /**
+     * @access protected
+     * @var string last error text occured during query execution 
+     */	
 	
-	protected $LastErrorText = '';
+    protected $LastErrorText = '';
 
-  /**
-   * @access protected
-   * @var int row count for current result set
-   */	
+    /**
+     * @access protected
+     * @var int row count for current result set
+     */	
   
-  protected $ResultRowCount = 0;
+    protected $ResultRowCount = 0;
  
-  /**
-   * @access protected
-   * @var int field count for current result set
-   */	 
+    /**
+     * @access protected
+     * @var int field count for current result set
+     */	 
   
-  protected $ResultFieldCount = 0;
+    protected $ResultFieldCount = 0;
   
-  /**
-   * @access protected
-   * @var int row pointer for current result set
-   */	  
+    /**
+     * @access protected
+     * @var int row pointer for current result set
+     */	  
   
-  protected $RowPointer = 0;
+    protected $RowPointer = 0;
   
-  /**
-   * @access protected
-   * @var int field pointer for current result set
-   */	    
+    /**
+     * @access protected
+     * @var int field pointer for current result set
+     */	    
 
-  protected $FieldPointer = 0; 
+    protected $FieldPointer = 0; 
   
-  /**
-   * @access protected
-   * @var resource for results sets used by iterator functions
-   */	    
+    /**
+     * @access protected
+     * @var resource for results sets used by iterator functions
+     */	    
   
-  protected $ResultRes = null;
+    protected $ResultRes = null;
 	
-	/* Core functions starts here */
+    /* Core functions starts here */
 
-	protected function __construct()
-		{
-		}
+    protected function __construct()
+        {
+        }
 
-  public function __destruct() 
-		{
-    $this->CloseDBLink();
+    public function __destruct() 
+        {
+        $this->CloseDBLink();
    	}
    	
-  /**
-   * Function that used to connect to database.
-   * 
-   * It is a first function that needs to be called before work with database and execute queries.
-   * 
-   * @access public 
-   *    
-   * @param string name of the database server.
-   * @param string name of the database user.  
-   * @param string name of the database user password.
-   * 
-   * @throws plcChassisException         
-   * 
-   * @return bool returns TRUE on succesfully connection to database.
-   *                         
-   */  
+    /**
+     * Function that used to connect to database.
+     * 
+     * It is a first function that needs to be called before work with database and execute queries.
+     * 
+     * @access public 
+     *    
+     * @param string name of the database server.
+     * @param string name of the database user.  
+     * @param string name of the database user password.
+     * 
+     * @throws plcChassisException         
+     * 
+     * @return bool returns TRUE on succesfully connection to database.
+     *                         
+     */  
 
-	public function ConnectToDB($usrServer, $usrUser, $usrPassword)
-		{
-		$tmpDBLink = FALSE;
+    public function ConnectToDB($usrServer, $usrUser, $usrPassword)
+        {
+        $tmpDBLink = FALSE;
 		
-		$this->CloseDBLink();
+        $this->CloseDBLink();
 
-		if (empty($usrServer))
-			{
-			throw new plcChassisException('User does not provided server name.', 1101, null ,'Cannot connect to unknown server.');
-			}
+        if (empty($usrServer))
+            {
+            throw new plcChassisException('User does not provided server name.', 1101, null ,'Cannot connect to unknown server.');
+            }
 
-		if (empty($usrUser))
-			{
-			throw new plcChassisException('User does not provided user name.', 1102, null ,'Cannot connect to data base without specified user.');
-			}
+        if (empty($usrUser))
+            {
+            throw new plcChassisException('User does not provided user name.', 1102, null ,'Cannot connect to data base without specified user.');
+            }
 
-		/*if (empty($usrPassword))
-			{
-			throw new plcChassisException('User does not provided password.', 1103, null ,'Cannot connect to data base without specified password.');
-			}  */
+        /*if (empty($usrPassword))
+            {
+            throw new plcChassisException('User does not provided password.', 1103, null ,'Cannot connect to data base without specified password.');
+            }  */
 		
-		$this->DBServerName = $usrServer;
-		$this->DBUserName = $usrUser;
-		$this->DBPassword = $usrPassword;
+        $this->DBServerName = $usrServer;
+        $this->DBUserName = $usrUser;
+        $this->DBPassword = $usrPassword;
 	
-		$tmpDBLink = @mysql_connect($usrServer, $usrUser, $usrPassword, true);
+        $tmpDBLink = @mysql_connect($usrServer, $usrUser, $usrPassword, true);
 
-		if ($tmpDBLink === FALSE)
-			{
-			throw new plcChassisException('Could not connect to database.', 1108, null ,'Server name, user name or password is incorrect.');
-			}
-		else
-			{
-			$this->DBLink = $tmpDBLink;
-			}	
+        if ($tmpDBLink === FALSE)
+            {
+            throw new plcChassisException('Could not connect to database.', 1108, null ,'Server name, user name or password is incorrect.');
+            }
+        else
+            {
+            $this->DBLink = $tmpDBLink;
+            }	
       
-    return TRUE;	
-		}
+        return TRUE;	
+        }
 		
   /**
    * Function that used to reconnect to database.
@@ -240,6 +240,23 @@ class plcMySQLDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnector
      
     return $this->SetDatabase($this->DBName);    
     }
+    
+    /**
+     * Function that indicates whether current object is connected to the database or not.
+     * 
+     * Simple function that indicates whether object is connected to the database or not.
+     * 
+     * @access public 
+     *        
+     * @return bool returns TRUE if object is connected to the database and FALSE if not.
+     *                         
+     */  
+
+    public function IsConnected()
+        {
+        if (is_null($this->DBLink) === TRUE) {return FALSE;}
+        else {return TRUE;}
+        }
     
   /**
    * Function that used to execute user defined SQL query.
@@ -1311,9 +1328,8 @@ class plcMySQLDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnector
    * 
    * @throws plcChassisException      
    *    
-   * @return bool returns TRUE on succes. 
-   *
-   * @see plcMySQLDBConnector::ReConnectToDB()                               
+   * @return bool returns TRUE on success. 
+   *                            
    */
     
   public function SetPassword($usrPassword)

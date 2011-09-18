@@ -1,5 +1,5 @@
 plcMySQLDBRowDataGateway tutorial
-===================================
+=================================
 
 Save example(1)
 ---------------
@@ -25,4 +25,26 @@ $tmpARow = new plcMySQLDBRowDataGateway($tmpDBConnector, 'aiop_api_request', arr
 
 $tmpARow->get = 'get test1';
 $tmpARow->post = 'post test1';
+$tmpARow->Save();
+
+Save example(3) - using aliases
+-------------------------------
+
+$tmpDBConnector = plcMySQLIDBConnector::GetInstance();
+$tmpDBConnector->ConnectToDB('localhost', 'root', '');
+$tmpDBConnector->SetDatabaseName('alionpay');
+
+$tmpAliases = array(
+                    'ROW_ID' => 'id',
+                    'ROW_POST' => 'post',
+                    'ROW_GET' => 'get',
+                    'ROW_DEAL_ID' => 'deal_id'
+                    );
+
+$tmpARow = new plcMySQLDBRowDataGateway($tmpDBConnector, 'aiop_api_request', 'ROW_ID', 376, $tmpAliases);
+
+$tmpARow->ROW_POST = 'POST_1';
+$tmpARow->ROW_GET = 'GET_1';
+$tmpARow->ROW_DEAL_ID = '1';
+
 $tmpARow->Save();

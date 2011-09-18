@@ -1,0 +1,38 @@
+plcDBConnectorFactory tutorial
+==============================
+
+Create MYSQL connector object(as singleton) using registry
+----------------------------------------------------------
+
+plcGlobRegistry::SetOption('default_mysql_host', 'localhost');
+plcGlobRegistry::SetOption('default_mysql_user', 'root');
+plcGlobRegistry::SetOption('default_mysql_password', 'sfdsc33');
+plcGlobRegistry::SetOption('default_mysql_database', 'test');
+
+$tmpReadyObject = plcDBConnectorFactory::GetDBConnector('MYSQL');
+
+$tmpReadyObject->SetQuery('SELECT * FROM `comments`');
+$tmpResult = $tmpReadyObject->GetResultAssoc();
+
+Create MYSQL connector object(as singleton) without using registry
+------------------------------------------------------------------
+
+$tmpSettings = array('host' => 'localhost', 'user' => 'root', 'password' => 'sfdsc33', 'database' => 'test');
+
+$tmpReadyObject = plcDBConnectorFactory::GetDBConnector('MYSQL', $tmpSettings);
+
+$tmpReadyObject->SetQuery('SELECT * FROM `comments`');
+$tmpResult = $tmpReadyObject->GetResultAssoc();
+
+Create MYSQL table gateway connector object using registry
+----------------------------------------------------------
+
+plcGlobRegistry::SetOption('default_mysql_host', 'localhost');
+plcGlobRegistry::SetOption('default_mysql_user', 'root');
+plcGlobRegistry::SetOption('default_mysql_password', 'sfdsc33');
+plcGlobRegistry::SetOption('default_mysql_database', 'test');
+
+$tmpSettings = array('tablename' => 'comments', 'primkey' => 'id');
+
+$tmpReadyObject = plcDBConnectorFactory::GetDBConnector('MYSQLTABLE', $tmpSettings);
+$tmpResult = $tmpReadyObject->FindAssoc(1);

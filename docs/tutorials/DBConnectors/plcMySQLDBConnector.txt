@@ -1,0 +1,12 @@
+plcMySQLDBConnector tutorial
+============================
+
+Get result in form of associative array example
+-----------------------------------------------
+
+$tmpReadyObject = plcMySQLDBConnector::GetInstance();
+$tmpReadyObject->ConnectToDB('localhost', 'root', 'fd32fsa');
+$tmpReadyObject->SetDatabaseName('test');
+
+$tmpReadyObject->SetQuery('SELECT * FROM `comments`');
+$tmpResult = $tmpReadyObject->GetResultAssoc();

@@ -74,6 +74,13 @@ class plcMySQLDBRowDataGateway
     protected $MetaData = NULL; 
     
     /**
+     * @access protected
+     * @var array of aliases for correspondence table fields
+     */	      
+    
+    protected $FieldsAliases = array();    
+    
+    /**
      * Constructor function.
      * 
      * Constructor function used to set current database connection object, current table name and its primary key.
@@ -84,13 +91,14 @@ class plcMySQLDBRowDataGateway
      * @param string name of the current table.  
      * @param array|string primary key of the current table.
      * @param array|string primary key value.
+     * @param array of aliases for fields of current table.
      * 
      * @throws plcChassisException         
      *                         
      */     
     
-    public function __construct($usrDBConnector, $usrTableName = '', $usrPrimKey = '', $usrPrimKeyVal = '')
-        {
+    public function __construct($usrDBConnector, $usrTableName = '', $usrPrimKey = '', $usrPrimKeyVal = '', $usrAliases = array())
+        {     
         if ($this->SetDBConnector($usrDBConnector) === FALSE)
             {
             throw new plcChassisException('Invalid database connector object.', 1601, null ,'User provided invalid connector object that do not supports necessary interfaces.');
@@ -102,14 +110,16 @@ class plcMySQLDBRowDataGateway
             }
             
         if ($this->SetPrimKey($usrPrimKey) === FALSE)
-            {
+            {         
             throw new plcChassisException('Invalid primary key.', 1603, null ,'User provided invalid primary key for current table.');
             } 
-            
+
+        $this->SetFieldsAliases($usrAliases);    
+           
         if ($this->LoadRow($usrPrimKeyVal) === FALSE)
-            {
+            {       
             throw new plcChassisException('Invalid primary key value.', 1604, null ,'User provided invalid primary key value.');
-            }              
+            } 
         }
         
     public function __destruct()
@@ -164,6 +174,10 @@ class plcMySQLDBRowDataGateway
     public function LoadRow($usrVals = '')
         {
         $tmpResult = FALSE;
+        $tmpRevAliases = array();
+        
+        $tmpField = '';
+        $tmpFieldVal = '';
         
         $tmpType = FALSE;
         
@@ -174,11 +188,11 @@ class plcMySQLDBRowDataGateway
         
         if (is_null($this->TableName) === TRUE || is_null($this->DBConnector || is_null($this->PrimKey) === TRUE || empty($usrVals)) === TRUE) {return FALSE;}
         if ($this->LoadTableMeta() === FALSE) {return FALSE;}
-        
+                        
         if (is_array($this->PrimKey) === FALSE && is_array($usrVals) === FALSE) 
             {
             /* Row data load starts here */
-            
+                    
             $tmpType = $this->GetParamTypeLetter($usrVals);
             if ($tmpType === FALSE)
                 {
@@ -186,26 +200,58 @@ class plcMySQLDBRowDataGateway
                 } 
                 
             $tmpTypes .= $tmpType;                
-            $tmpKeys .= $this->PrimKey.' = ?';
+            $tmpKeys .= '`'.$this->PrimKey.'` = ?';
             $usrVals = array($usrVals);            
-      
+
             $this->DBConnector->SetPrepQuery('SELECT * FROM `'.$this->TableName.'` WHERE '.$tmpKeys);
             if ($this->DBConnector->SetPrepQueryParamsArr($tmpTypes, $usrVals) === FALSE){return FALSE;}
             
             $tmpResult = $this->DBConnector->GetPrepResultRow();
             if ($tmpResult === FALSE) {return FALSE;}
-            
+
             /* Row data load ends here */
-                
+            
+            $tmpRevAliases = array_flip($this->FieldsAliases);
+            if (is_null($tmpRevAliases) === TRUE) {$tmpRevAliases = array();}
+                            
             for ($Counter1 = 0; $Counter1 < count($this->MetaData); $Counter1++)
                 {
-                if (is_string($tmpResult[$this->MetaData[$Counter1]['Field']]) === TRUE)
-                    {
-                    eval('$this->'.$this->MetaData[$Counter1]['Field'].' = "'.$tmpResult[$this->MetaData[$Counter1]['Field']].'";');
+                /* Aliases check starts here */
+             
+                if (array_key_exists($this->MetaData[$Counter1]['Field'], $tmpRevAliases) === TRUE)
+                    {        
+                    $tmpField = $tmpRevAliases[$this->MetaData[$Counter1]['Field']];
                     }
                 else
                     {
-                    eval('$this->'.$this->MetaData[$Counter1]['Field'].' = '.$tmpResult[$this->MetaData[$Counter1]['Field']].';');
+                    $tmpField = $this->MetaData[$Counter1]['Field'];
+                    }
+                    
+                /* Aliases check ends here */                 
+                
+                $tmpFieldVal = $tmpResult[$this->MetaData[$Counter1]['Field']];
+                
+                if (is_string($tmpResult[$this->MetaData[$Counter1]['Field']]) === TRUE)
+                    {
+                    if (isset($tmpFieldVal) === FALSE || empty($tmpFieldVal) === TRUE || is_null($tmpFieldVal) === TRUE)
+                        {
+                        eval('$this->'.$tmpField.' = "";');
+                        }
+                    else
+                        {
+                        eval('$this->'.$tmpField.' = "'.$tmpFieldVal.'";');
+                        }                                         
+                    }
+                else
+                    {
+                    if (isset($tmpFieldVal) === FALSE || empty($tmpFieldVal) === TRUE || is_null($tmpFieldVal) === TRUE)
+                        {
+                        eval('$this->'.$tmpField.' = 0;');
+                        }
+                    else
+                        {
+                        eval('$this->'.$tmpField.' = '.$tmpFieldVal.';');
+                        }                                                                             
                     }                                              
                 }
                 
@@ -222,11 +268,11 @@ class plcMySQLDBRowDataGateway
                 $tmpType = $this->GetParamTypeLetter($usrVals[$Counter1]);
                 if ($tmpType === FALSE)
                     {
-                    throw new plcChassisException('Could not determine value type.', 1504, null ,'User provided invalid variable data to the GetParamTypeLetter() function.');
+                    throw new plcChassisException('Could not determine value type.', 1605, null ,'User provided invalid variable data to the GetParamTypeLetter() function.');
                     }   
                     
                 $tmpTypes .= $tmpType;                
-                $tmpKeys .= $this->PrimKey[$Counter1].' = ?';
+                $tmpKeys .= '`'.$this->PrimKey[$Counter1].'` = `?`';
                 }
                 
             $this->DBConnector->SetPrepQuery('SELECT * FROM `'.$this->TableName.'` WHERE '.$tmpKeys);
@@ -237,15 +283,31 @@ class plcMySQLDBRowDataGateway
             
             /* Row data load ends here */
             
+            $tmpRevAliases = array_flip($this->FieldsAliases);
+            if (is_null($tmpRevAliases) === TRUE) {$tmpRevAliases = array();}
+                      
             for ($Counter1 = 0; $Counter1 < count($this->MetaData); $Counter1++)
-                {
-                if (is_string($tmpResult[$this->MetaData[$Counter1]['Field']]) === TRUE)
-                    {
-                    eval('$this->'.$this->MetaData[$Counter1]['Field'].' = "'.$tmpResult[$this->MetaData[$Counter1]['Field']].'";');
+                {                
+                /* Aliases check starts here */
+             
+                if (array_key_exists($this->MetaData[$Counter1]['Field'], $tmpRevAliases) === TRUE)
+                    {        
+                    $tmpField = $tmpRevAliases[$this->MetaData[$Counter1]['Field']];
                     }
                 else
                     {
-                    eval('$this->'.$this->MetaData[$Counter1]['Field'].' = '.$tmpResult[$this->MetaData[$Counter1]['Field']].';');
+                    $tmpField = $this->MetaData[$Counter1]['Field'];
+                    }
+                    
+                /* Aliases check ends here */   
+                      
+                if (is_string($tmpResult[$this->MetaData[$Counter1]['Field']]) === TRUE)
+                    {
+                    eval('$this->'.$tmpField.' = "'.$tmpResult[$this->MetaData[$Counter1]['Field']].'";');
+                    }
+                else
+                    {
+                    eval('$this->'.$tmpField.' = '.$tmpResult[$this->MetaData[$Counter1]['Field']].';');
                     }                                              
                 }
                 
@@ -271,9 +333,11 @@ class plcMySQLDBRowDataGateway
     public function Save()
         {
         $tmpResult = FALSE;
+        $tmpRevAliases = array();
        
         $tmpVal = NULL;
         $tmpType = FALSE;
+        $tmpField = '';
         
         $tmpTypes = '';
         $tmpKeys = '';
@@ -283,14 +347,30 @@ class plcMySQLDBRowDataGateway
         if (is_null($this->TableName) === TRUE || is_null($this->DBConnector || is_null($this->PrimKey) === TRUE) === TRUE) {return FALSE;}
         if ($this->LoadTableMeta() === FALSE) {return FALSE;}
         
+        $tmpRevAliases = array_flip($this->FieldsAliases);
+        if (is_null($tmpRevAliases) === TRUE) {$tmpRevAliases = array();}
+        
         for ($Counter1 = 0; $Counter1 < count($this->MetaData); $Counter1++)
-            {
+            { 
             if ($Counter1 > 0)
                 {
                 $tmpKeys .= ', ';
-                }            
-            
-            eval('$tmpVal = $this->'.$this->MetaData[$Counter1]['Field'].';');    
+                }   
+                
+            /* Aliases check starts here */
+             
+            if (array_key_exists($this->MetaData[$Counter1]['Field'], $tmpRevAliases) === TRUE)
+                {        
+                $tmpField = $tmpRevAliases[$this->MetaData[$Counter1]['Field']];
+                }
+            else
+                {
+                $tmpField = $this->MetaData[$Counter1]['Field'];
+                }
+                    
+            /* Aliases check ends here */   
+                                                
+            eval('$tmpVal = $this->'.$tmpField.';');    
     
             $tmpType = $this->GetParamTypeLetter($tmpVal);
             if ($tmpType === FALSE)
@@ -299,7 +379,7 @@ class plcMySQLDBRowDataGateway
                 }
                             
             $tmpTypes .= $tmpType;    
-            $tmpKeys .= $this->MetaData[$Counter1]['Field'].' = ?';
+            $tmpKeys .= '`'.$this->MetaData[$Counter1]['Field'].'` = ?';
             $tmpVals[] = $tmpVal;                       
             }
             
@@ -314,25 +394,51 @@ class plcMySQLDBRowDataGateway
                 if ($Counter1 > 0)
                     {
                     $tmpKeys .= ' AND ';
-                    }            
+                    }  
+                    
+                /* Aliases check starts here */
+             
+                if (array_key_exists($this->PrimKey[$Counter1], $tmpRevAliases) === TRUE)
+                    {        
+                    $tmpField = $tmpRevAliases[$this->PrimKey[$Counter1]];
+                    }
+                else
+                    {
+                    $tmpField = $this->PrimKey[$Counter1];
+                    }
+                    
+                /* Aliases check ends here */                     
             
-                eval('$tmpVal = $this->'.$this->PrimKey[$Counter1].';');    
+                eval('$tmpVal = $this->'.$tmpField.';');    
     
                 $tmpType = $this->GetParamTypeLetter($tmpVal);
                 if ($tmpType === FALSE)
                     {
                     throw new plcChassisException('Could not determine value type.', 1605, null ,'User provided invalid variable data to the GetParamTypeLetter() function.');
                     }
-                            
+                                                               
                 $tmpTypes .= $tmpType;    
-                $tmpKeys .= $this->PrimKey[$Counter1].' = ?';
+                $tmpKeys .= '`'.$this->PrimKey[$Counter1].'` = ?';
                 $tmpVals[] = $tmpVal;                       
                 }            
             }
         else
             {
-            eval('$tmpVal = $this->'.$this->PrimKey.';'); 
+            /* Aliases check starts here */
+             
+            if (array_key_exists($this->PrimKey, $tmpRevAliases) === TRUE)
+                {        
+                $tmpField = $tmpRevAliases[$this->PrimKey];
+                }
+            else
+                {
+                $tmpField = $this->PrimKey;
+                }
+                    
+            /* Aliases check ends here */              
             
+            eval('$tmpVal = $this->'.$tmpField.';'); 
+                                  
             $tmpType = $this->GetParamTypeLetter($tmpVal);
             if ($tmpType === FALSE)
                 {
@@ -340,7 +446,7 @@ class plcMySQLDBRowDataGateway
                 }
                 
             $tmpTypes .= $tmpType;    
-            $tmpKeys .= $this->PrimKey.' = ?';
+            $tmpKeys .= '`'.$this->PrimKey.'` = ?';
             $tmpVals[] = $tmpVal; 
             }
             
@@ -348,7 +454,7 @@ class plcMySQLDBRowDataGateway
             
         $this->DBConnector->SetPrepQuery('UPDATE `'.$this->TableName.'` SET '.$tmpKeys);
         if ($this->DBConnector->SetPrepQueryParamsArr($tmpTypes, $tmpVals) === FALSE){return FALSE;}
-        
+
         return $this->DBConnector->ExecutePrepQuery();    
         }
         
@@ -373,7 +479,24 @@ class plcMySQLDBRowDataGateway
         else if (is_float($usrParam) === TRUE) {return 'd';}
         else if (is_string($usrParam) === TRUE) {return 's';}
         else {return FALSE;}
-        }            
+        }  
+        
+    /**
+     * Function that used to return ID generated for an AUTO_INCREMENT column by the previous query.
+     *
+     * Simple function that returns ID generated for an AUTO_INCREMENT column by the previous query.
+     *
+     * @access public
+     *
+     * @throws plcChassisException
+     *
+     * @return int|Bool returns ID for an AUTO_INCREMENT column by the previous query on succes and FALSE if ID was not generated.
+     */
+
+    public function GetLastInsertId()
+        {
+        return $this->DBConnector->GetLastInsertId();
+        }    
         
     /* Get methods ends here */
         
@@ -474,8 +597,13 @@ class plcMySQLDBRowDataGateway
                 
                 for ($Counter1 = 0; $Counter1 < count($tmpResult); $Counter1++)
                     {
-                    $this->PrimKey[] = $tmpResult[$Counter1]['Column_name'];
+                    if ($tmpResult[$Counter1]['Key_name'] === 'PRIMARY')
+                        {
+                        $this->PrimKey[] = $tmpResult[$Counter1]['Column_name'];
+                        }    
                     }
+                    
+                if (count($this->PrimKey) == 1){$this->PrimKey = $this->PrimKey[0];}    
                     
                 return TRUE;    
                 }
@@ -483,10 +611,60 @@ class plcMySQLDBRowDataGateway
         else
             {
             if (is_string($usrPrimKey) === TRUE) {$this->PrimKey = $usrPrimKey; return TRUE;}
-            else if(is_array($usrPrimKey) === TRUE){$this->PrimKey = $usrPrimKey; return TRUE;}
+            else if(is_array($usrPrimKey) === TRUE)
+                {
+                if (count($usrPrimKey) == 1) {$this->PrimKey = $usrPrimKey[0];}
+                else
+                    {
+                    $this->PrimKey = $usrPrimKey;
+                    }
+                
+                return TRUE;               
+                }
             else {return FALSE;}
             }        
         }
+        
+    /**
+     * Function that sets aliases for fields of current table.
+     * 
+     * Function that is used to set aliases for fields of current table.
+     * 
+     * @access public
+     * 
+     * @param array associaative array of aliases.
+     *    
+     * @return bool returns TRUE on success and FALSE on fail.        
+     *                         
+     */         
+        
+    public function SetFieldsAliases($usrFieldsAliases = array())
+        {
+        if (is_array($usrFieldsAliases) === FALSE) {return FALSE;}
+        if (count($usrFieldsAliases) <= 0) {return FALSE;}
+        
+        $this->FieldsAliases = $usrFieldsAliases;
+        
+        if (is_array($this->PrimKey) === TRUE)
+            {
+            for ($Counter1 = 0; $Counter1 < count($this->PrimKey); $Counter1++)
+                {
+                if (array_key_exists($this->PrimKey[$Counter1], $this->FieldsAliases) === TRUE)
+                    {
+                    $this->PrimKey[$Counter1] = $this->FieldsAliases[$this->PrimKey[$Counter1]];
+                    }  
+                }          
+            }
+        else if (is_string($this->PrimKey) === TRUE)
+            {
+            if (array_key_exists($this->PrimKey, $this->FieldsAliases) === TRUE)
+                {
+                $this->PrimKey = $this->FieldsAliases[$this->PrimKey];
+                }          
+            }     
+             
+        return TRUE;
+        }        
                        
     /* Set methods ends here */
     }

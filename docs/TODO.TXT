@@ -1,8 +1,9 @@
 1. Use proper Eanglish for documentation;
-2. Сделать depends on в документации для Chassis
-3. Сделать proper eanglish в документации для Chassis
-4. Проверить все
+2. пїЅпїЅпїЅпїЅпїЅпїЅпїЅ depends on пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ Chassis
+3. пїЅпїЅпїЅпїЅпїЅпїЅпїЅ proper eanglish пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ Chassis
+4. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
 5. Error list
 6. Fix CMYK to RGB in pdf
 7. Write manual for pdf
 8. Make file class work with standart exeptions
+9. Fix sqlite3 class

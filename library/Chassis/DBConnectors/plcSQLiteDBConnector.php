@@ -231,6 +231,23 @@ class plcSQLiteDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnecto
     return TRUE;	    	  
     }
     
+    /**
+     * Function that indicates whether current object is connected to the database or not.
+     * 
+     * Simple function that indicates whether object is connected to the database or not.
+     * 
+     * @access public 
+     *        
+     * @return bool returns TRUE if object is connected to the database and FALSE if not.
+     *                         
+     */  
+
+    public function IsConnected()
+        {
+        if (is_null($this->DBLink) === TRUE) {return FALSE;}
+        else {return TRUE;}
+        }     
+    
   /**
    * Function that used to execute user defined SQL query.
    * 
@@ -266,33 +283,33 @@ class plcSQLiteDBConnector implements pliSharedDBConnector, pliSmplSQLDBConnecto
       }
 		}    
     
-  /**
-   * Function that used to close connection to database.
-   * 
-   * Simple function that closes connection with database and free resources for SQLite prepared statemen object.
-   * Note that this function will be automaticly called inside destructor function.
-   * 
-   * @access public 
-   *    
-   * @return bool returns TRUE if function successfuly close connection to database, FALSE if connection to database was not yet established.
-   * 
-   * @see plcSQLiteDBConnector::ConnectToDB()  
-   * @see plcSQLiteDBConnector::ReConnectToDB()                             
-   */ 
+    /**
+     * Function that used to close connection to database.
+     * 
+     * Simple function that closes connection with database and free resources for SQLite prepared statemen object.
+     * Note that this function will be automaticly called inside destructor function.
+     * 
+     * @access public 
+     *    
+     * @return bool returns TRUE if function successfuly close connection to database, FALSE if connection to database was not yet established.
+     * 
+     * @see plcSQLiteDBConnector::ConnectToDB()  
+     * @see plcSQLiteDBConnector::ReConnectToDB()                             
+     */ 
 
-	public function CloseDBLink()
-		{
-		if ($this->DBLink != NULL)
-		  {
-		  sqlite_close($this->DBLink);
-		  $this->DBLink = NULL;
-		  return TRUE;
-      }
-    else
-      {
-      return FALSE;
-      }
-		}
+    public function CloseDBLink()
+        {
+        if ($this->DBLink != NULL)
+            {
+            sqlite_close($this->DBLink);
+            $this->DBLink = NULL;
+            return TRUE;
+            }
+        else
+            {
+            return FALSE;
+            }
+        }
     
   /**
    * Function that used to escape special characters in user defined string.

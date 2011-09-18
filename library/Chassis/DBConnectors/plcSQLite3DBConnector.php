@@ -153,37 +153,56 @@ class plcSQLite3DBConnector implements pliSharedDBConnector//, pliSmplSQLDBConne
     return TRUE;	
     }
     
-  /**
-   * Function that used to close connection to database.
-   * 
-   * Simple function that closes connection with database and free resources for SQLite prepared statemen object.
-   * Note that this function will be automaticly called inside destructor function.
-   * 
-   * @access public 
-   *    
-   * @return bool returns TRUE if function successfuly close connection to database, FALSE if connection to database was not yet established.
-   * 
-   * @see plcSQLite3DBConnector::ConnectToDB()  
-   * @see plcSQLite3DBConnector::ReConnectToDB()                             
-   */ 
+    /**
+     * Function that indicates whether current object is connected to the database or not.
+     * 
+     * Simple function that indicates whether object is connected to the database or not.
+     * 
+     * @access public 
+     *        
+     * @return bool returns TRUE if object is connected to the database and FALSE if not.
+     *                         
+     */  
 
-	public function CloseDBLink()
-		{
-		if ($this->SQLite3StmtObj != NULL)
-		  {
-		  @$this->SQLite3StmtObj->close();
-      }
+    public function IsConnected()
+        {
+        if (is_null($this->SQLite3Obj) === TRUE) {return FALSE;}
+        else {return TRUE;}
+        }    
+    
+    /**
+     * Function that used to close connection to database.
+     * 
+     * Simple function that closes connection with database and free resources for SQLite prepared statemen object.
+     * Note that this function will be automaticly called inside destructor function.
+     * 
+     * @access public 
+     *    
+     * @return bool returns TRUE if function successfuly close connection to database, FALSE if connection to database was not yet established.
+     * 
+     * @see plcSQLite3DBConnector::ConnectToDB()  
+     * @see plcSQLite3DBConnector::ReConnectToDB()                             
+     */ 
+
+    public function CloseDBLink()
+        {
+        if ($this->SQLite3StmtObj != NULL)
+            {
+            @$this->SQLite3StmtObj->close();
+            $this->SQLite3StmtObj = NULL;
+            }
 		
-		if ($this->SQLite3Obj != NULL)
-			{
-			@$this->SQLite3Obj->close();
-      return TRUE;	
-			}
-		else
-		  {
-		  return FALSE;
-      }
-		}    
+        if ($this->SQLite3Obj != NULL)
+            {
+            @$this->SQLite3Obj->close();
+            $this->SQLite3Obj = NULL;
+            return TRUE;	
+            }   
+        else
+            {
+            return FALSE;
+            }
+        }    
 	
 	/* Core functions ends here */
 		

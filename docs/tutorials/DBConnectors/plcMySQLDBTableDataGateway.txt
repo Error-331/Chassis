@@ -59,11 +59,6 @@ $tmpDBConnector->SetDatabaseName('alionpay');
 
 $tmpATable = new plcMySQLDBTableDataGateway($tmpDBConnector, 'aiop_api_request', array('id', 'deal_id'));
 
-$tmpData = array(
-                'post' => 'NEW_POST',
-                'deal_id' => 331
-                );
-
 $tmpATable->Delete('deal_id = ? AND info = ?', array(4, "Test info"));
 
 Find example
@@ -98,3 +93,77 @@ $tmpDBConnector->SetDatabaseName('alionpay');
 $tmpATable = new plcMySQLDBTableDataGateway($tmpDBConnector, 'aiop_api_request', 'id');
 
 $tmpResults = $tmpATable->FindAssoc(1);
+
+Aliases usage with insert command example
+-----------------------------------------
+
+$tmpDBConnector = plcMySQLIDBConnector::GetInstance();
+$tmpDBConnector->ConnectToDB('localhost', 'root', '');
+$tmpDBConnector->SetDatabaseName('alionpay');
+
+$tmpATable = new plcMySQLDBTableDataGateway($tmpDBConnector, 'aiop_api_request', array('id', 'deal_id'));
+
+$tmpAliases = array(
+                   'new_name' => 'name',
+                   'new_post' => 'post',
+                   'new_get' => 'get',
+                   'new_dealid' => 'deal_id',
+                   'new_date' => 'date',
+                   'new_info' => 'info'
+                   );
+
+$tmpATable->SetFieldsAliases($tmpAliases);
+
+$tmpData = array(
+                'new_post' => 'NEW_POST',
+                'new_deal_id' => 100500
+                );
+
+$tmpATable->Insert($tmpData);
+
+Aliases usage with update command example
+-----------------------------------------
+
+$tmpDBConnector = plcMySQLIDBConnector::GetInstance();
+$tmpDBConnector->ConnectToDB('localhost', 'root', '');
+$tmpDBConnector->SetDatabaseName('alionpay');
+
+$tmpAliases = array(
+                   'new_id' => 'id',
+                   'new_name' => 'name',
+                   'new_post' => 'post',
+                   'new_get' => 'get',
+                   'new_dealid' => 'deal_id',
+                   'new_date' => 'date',
+                   'new_info' => 'info'
+                   );
+
+$tmpATable = new plcMySQLDBTableDataGateway($tmpDBConnector, 'aiop_api_request', array('id', 'deal_id'), $tmpAliases);
+
+$tmpData = array(
+                'new_post' => 'NEW_POST4',
+                'new_dealid' => 4
+                );
+
+$tmpATable->Update($tmpData, $tmpATable->GetFieldByAlias('new_id').' = ?', array(375));
+
+Aliases usage with FindAssoc command example
+--------------------------------------------
+
+$tmpDBConnector = plcMySQLIDBConnector::GetInstance();
+$tmpDBConnector->ConnectToDB('localhost', 'root', '');
+$tmpDBConnector->SetDatabaseName('alionpay');
+
+$tmpAliases = array(
+                   'new_id' => 'id',
+                   'new_name' => 'name',
+                   'new_post' => 'post',
+                   'new_get' => 'get',
+                   'new_dealid' => 'deal_id',
+                   'new_date' => 'date',
+                   'new_info' => 'info'
+                   );
+
+$tmpATable = new plcMySQLDBTableDataGateway($tmpDBConnector, 'aiop_api_request', 'new_id', $tmpAliases);
+
+$tmpResults = $tmpATable->FindAssoc(374);

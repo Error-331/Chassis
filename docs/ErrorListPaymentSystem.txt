@@ -1,0 +1,146 @@
+Payment system classes (11101 - 1nnnn)
+======================================
+
+Abstract payment classes (11101 - 111nn)
+
+11101
+Cannot parse config.ini file.
+'Cannot parse ini file: "'.$usrPath.'"'
+
+11102
+Cannot load payment system id.
+'Cannot load payment system id for alias: "'.$this->Controller->GetPaymentSystemAlias().'"'
+
+11103
+Cannot load accepted currencies ids for payment system.
+'Cannot load accepted currencies ids for payment system with ID: "'.$this->Controller->GetPaymentSystemId().'"'
+
+11104
+Invalid or empty user id.
+Invalid or empty user id is set as object value.
+
+11105
+Invalid or empty user currency id.
+Invalid or empty user currency id provided to constructor function call.
+
+11106
+Invalid or empty shop id.
+Invalid or empty shop id is set as object value.
+
+11107
+Invalid or empty shop currency id.
+Invalid or empty shop currency id provided to constructor function call.
+
+11108
+Invalid transaction parameter list.
+User provided invalid transaction parameter list.
+
+11109
+Cannot create deal record.
+Error occurred while creating new deal record.
+
+11110
+Invalid selected payment currency.
+Invalid selected payment currency or it is not set.
+
+11111
+Payment system does not support selected currency.
+'Payment system does not support selected currency: "'.$usrSelCur.'"'
+
+UkrGarant classes (11201 - 112nn)
+
+11201
+Error while checking purse name.
+'Undefined error occurred while checking purse name: "'.strval($usrPurse).'".'
+
+11202
+Invalid purse name.
+User provided invalid purse name: "'.strval($usrPurse).'".
+
+11203
+Invalid user sum.
+User provided invalid sum: "'.strval($usrSum).'".
+
+11204
+Invalid user phone number
+User provided invalid phone number: "'.strval($usrPhoneNum).'".
+
+11205
+Invalid billing number.
+'User provided invalid billing number: "'.strval($usrPhoneNum).'".'
+
+11206
+Invalid billing duration.
+'User provided invalid billing duration: "'.strval($usrBillDur).'".'
+
+11207
+Cannot initialise CURL.
+Error while initialising CURL library or it is not installed.
+
+11208
+CURL is not initialized yet.
+CURL library is not initialized or is not installed.
+
+11209
+Fail to send a request to the server
+Faild to send a request to: "'.$usrURL.'".
+
+11210
+Can not parse response from the server.
+Error occurred while parsing XML response.
+
+11211
+Closing tag is missing.
+Closing tag for element "'.end($tmpElmArray).'" is not found.
+
+11212
+Undefined result tag value.
+Result tag value is NULL
+
+11213
+Invoice number is not set.
+New invoice number is not set or is invalid.
+
+11214
+Get invoice error.
+'Get invoice error number "'.$tmpRespResult.'".'
+
+11215
+Invalid response code.
+'Invalid error code "'.$tmpRespResult.'".
+
+11216
+Undefined requested operation.
+'Undefined operation: "'.$usrOperation.'".'
+
+11217
+"Custom fields" variable is not array.
+UkrGrant payment system requires additional fields to be present in "Custom fields" variable.
+
+11218
+"PAYEE_PURSE" field is not set.
+"PAYEE_PURSE" field must be present in the "Custom fields" variable.
+
+11219
+Invalid payee purse.
+Payee purse has invalid format: "'.strval($usrCustomFields['PAYEE_PURSE']).'"
+
+11220
+No payer phone found.
+"PAYER_PHONE" field is not set and no phone info found in the database.
+
+11221
+Cannot load invoice number.
+Undefined error occured while loading invoice number.
+
+11222
+Get invoice details error.
+'Get invoice details error number "'.$tmpResultArr['result'].'".
+
+11223
+Get invoice change error.
+'Get invoice change error number "'.$tmpResultArr['result'].'".'
+
+11224
+Cancel invoice error.
+Cancel invoice error number "'.$tmpResultArr['result'].'".

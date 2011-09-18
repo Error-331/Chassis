@@ -1,0 +1,17 @@
+plcGlobRegistry tutorial
+========================
+
+Get/Set option example
+----------------------
+
+plcGlobRegistry::SetOption('host', 'localhost');
+plcGlobRegistry::SetOption('user', 'root');
+plcGlobRegistry::SetOption('password', 'fd3Rssa');
+plcGlobRegistry::SetOption('database', 'test');
+
+$tmpReadyObject = plcMySQLDBConnector::GetInstance();
+$tmpReadyObject->ConnectToDB(plcGlobRegistry::GetOption('host'), plcGlobRegistry::GetOption('user'), plcGlobRegistry::GetOption('password'));
+$tmpReadyObject->SetDatabaseName(plcGlobRegistry::GetOption('database'));
+
+$tmpReadyObject->SetQuery('SELECT * FROM `comments`');
+$tmpResult = $tmpReadyObject->GetResultAssoc();

@@ -135,24 +135,6 @@
  * 
  */
 
-
-/*
- * Chassis template vars:
- * 
- * <Chassis type="variable" name="var_name"></Chassis>
- * 
- * or
- * 
- * </Chassis type="variable" name="var_name">
- * 
- * <Chassis type="section" name="var_name">
- * 
- * </Chassis type="variable" name="var_name">
- * 
- * </Chassis>
- * 
- */
-
 require_once('Chassis/ErrorHandling/plcTemplateSystemException.php');
 require_once('Chassis/Cache/plcSmplFileCache.php');
 

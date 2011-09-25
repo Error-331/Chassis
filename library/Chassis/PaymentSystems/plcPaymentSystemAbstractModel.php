@@ -786,6 +786,8 @@ abstract class plcPaymentSystemAbstractModel
             
         $tmpUserSum = $this->ConvertCurrency($this->Controller->GetShopCurrencyId(), $usrSelCur, $usrSum);    
         $tmpUserSum = $this->CalcCommision($tmpUserSum, TRUE);
+        
+        $this->Controller->SetDealSum($tmpUserSu);
           
         /* Currency conversion and add interest ends here */
                                                      

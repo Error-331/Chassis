@@ -1,0 +1,45 @@
+plcSmplFileCache tutorial
+=========================
+
+Simple caching example
+----------------------
+
+<?php
+
+$tmpCache = new plcSmplFileCache('Cache', '+ 10 seconds');
+
+if($tmpCache->IsCached() === TRUE)
+    {
+    $tmpCache->ShowCachedExit();
+    }
+else
+    {
+    $tmpCache->StartCahing();
+    
+    ?>
+
+    <html>
+     <head>
+      <title>Testing cache...</title>    
+     </head>    
+     <body>
+         
+      <div>
+       Testing content 1    
+      </div> 
+         
+      <br/>
+      
+      <div>
+       Testing content 2    
+      </div>    
+      
+     </dody>     
+    </html>    
+
+    <?php
+       
+    $tmpCache->EndCaching();
+    }
+ 
+?>

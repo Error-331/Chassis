@@ -128,6 +128,13 @@ abstract class plcPaymentSystemAbstractController
     
     /**
      * @access protected
+     * @var float sum of the current deal
+     */	      
+    
+    protected $DealSum = 0;
+    
+    /**
+     * @access protected
      * @var int id of the last request to the API (inbound, outbound)
      */	     
     
@@ -476,6 +483,25 @@ abstract class plcPaymentSystemAbstractController
         return $this->TransId;
         }
         
+        
+    /**
+     * Function that returns current deal sum.
+     * 
+     * Simple function that returns current deal sum. Note that this function will only return value
+     * different from zero if it was previously set, for example this value will be set after successfull
+     * call to the Bill() function.
+     * 
+     * @access public
+     * 
+     * @return int|float deal sum.
+     *                                        
+     */          
+        
+    public function GetDealSum($usrDealSum)
+        {
+        $this->DealSum = $usrDealSum;
+        }        
+        
     /**
      * Function that returns current id of last request to the API (inbound and outbound).
      * 
@@ -619,6 +645,22 @@ abstract class plcPaymentSystemAbstractController
         {
         $this->TransId = $usrTransId;
         } 
+        
+    /**
+     * Function that sets current deal sum.
+     * 
+     * Simple function that sets current deal sum.
+     * 
+     * @access public
+     * 
+     * @param int|float deal sum.
+     *                                        
+     */          
+        
+    public function SetDealSum($usrDealSum)
+        {
+        $this->DealSum = $usrDealSum;
+        }
         
     /**
      * Function that sets current id of last request to the API (inbound and outbound).

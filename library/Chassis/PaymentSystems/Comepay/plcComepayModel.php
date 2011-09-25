@@ -50,12 +50,41 @@ require_once('Chassis/PaymentSystems/plcPaymentSystemAbstractModel.php');
 
 class plcComepayModel extends plcPaymentSystemAbstractModel
     {    
+    
+    /**
+     * @access protected
+     * @var object table gate used to do operations with comepay payments registers.
+     */	     
+    
+    protected $PRegTableGate = NULL; 
+    
     /* Core methods starts here */
     
-    public function __construct($usrController, $usrDBConnector) 
+    /**
+     * Main constructor function.
+     * 
+     * Main constructor function initialises the work of the object.
+     * 
+     * @access public
+     * 
+     * @param object controller object
+     * 
+     * @throws plcChassisException, plcPaymentSystemException  
+     *                                      
+     */     
+    
+    public function __construct($usrController)
         {
-        $this->CurController = $usrController;
-        $this->DBConnector = $usrDBConnector;
+        parent::__construct($usrController);  
+        
+        $tmpConfArr = array();
+        
+        $tmpSettings = $this->Controller->GetINISettings();
+        
+        $tmpConfArr['tablename'] = $tmpSettings['model']['payments_registers_table'];
+        $tmpConfArr['primkey'] = $tmpSettings['model']['payments_registers_primkey'];
+        $this->PRegTableGate = plcDBConnectorFactory::GetDBConnector('MYSQLTABLE', $tmpConfArr);   
+        $this->PRegTableGate->SetFieldsAliases($tmpSettings['payments_registers_table_aliases']);        
         }
         
     public function __destruct() 
@@ -387,22 +416,36 @@ class plcComepayModel extends plcPaymentSystemAbstractModel
         $tmpTransGate->Delete('id = ? AND payment_system_transaction_id = ?', array($usrTransId, $usrPayId));
         }
     
-    // true fals array    
-    public function Check($usrAcc = '', $usrSum = '')
+        
+    /**
+     * 
+     * Function that checks whether provided deal id exists and if it payment can be conducted upon him.
+     * 
+     * Simple function that checks whether provided deal id exists and if it payment can be conducted upon him.
+     * If provided deal id does not exist in the database or payment can not be conducted upon him - array
+     * with corresponding error number (and additional info) will be returned.
+     * 
+     * @access public
+     * 
+     * @param int deal id to check
+     * 
+     * @return array|bool returns TRUE on success and array on error.
+     *                                        
+     */         
+          
+    public function Check($usrAcc = 0)
         {
         $tmpResult = FALSE;
-        $tmpErrArr = array();
-        
-        $tmpClinetsGate = new plcMySQLDBTableDataGateway($this->DBConnector, 'aiop_clients'); 
+        $tmpErrArr = array();       
        
-        if(empty($usrAcc) === FALSE && empty($usrSum) === FALSE) 
+        if($usrAcc != 0 && empty($usrSum) === FALSE) 
             {    
             try
                 {
-                $tmpResult = $tmpClinetsGate->Find($usrAcc);                        
+                $tmpResult = $this->DealsTableGate->Find($usrAcc);                       
                 if ($tmpResult === FALSE) {return array(504);} 
-                if ($tmpResult->status == 'deleted') {return array(534);}
-                
+                if ($tmpResult->status != 'new' && $tmpResult->status != 'partly_paid') {return array(534);}
+                                
                 return TRUE;
                 }
             catch (plcChassisException $usrError)
@@ -414,25 +457,6 @@ class plcComepayModel extends plcPaymentSystemAbstractModel
                 return $tmpErrArr; 
                 }                 
             }  
-        else if (empty($usrAcc) === FALSE && empty($usrSum) === TRUE)
-            {
-            try
-                {
-                $tmpResult = $tmpClinetsGate->Find($usrAcc);                        
-                if ($tmpResult === FALSE) {return array(504);} 
-                if ($tmpResult->status == 'deleted') {return array(534);}
-                
-                return TRUE;
-                }
-            catch (plcChassisException $usrError)
-                {
-                $tmpErrArr[] = 599;
-                $tmpErrArr[] = $usrError->getCode();
-                $tmpErrArr[] = $usrError->getMessage();
-                
-                return $tmpErrArr; 
-                }              
-            } 
         else
             {
             return array(508);
@@ -446,6 +470,22 @@ class plcComepayModel extends plcPaymentSystemAbstractModel
         
         $tmpAcc = NULL;
         $tmpSum = NULL;
+        
+        /*
+         * 
+         * 
+         *                 $tmpData = array(
+                                'COMEPAY_DEAL_ID' => $this->Controller->GetDealId(),
+                                'COMEPAY_TRANS_ID' => 0,
+                                'COMEPAY_COMEPAY_TRANS_ID' => 0,
+                                'COMEPAY_DATE' => time(),
+                                'COMEPAY_COMEPAY_DATE' => 0
+                                );                
+                
+                $this->PaymentsSpecTableGate->Insert($tmpData);
+         * 
+         */
+        
         
         $tmpData = array();
         

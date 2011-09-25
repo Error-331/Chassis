@@ -49,8 +49,11 @@ require_once('Chassis/ErrorHandling/plcPaymentSystemException.php');
 require_once('Chassis/PaymentSystems/plcPaymentSystemAbstractView.php');
 
 class plcComepayView extends plcPaymentSystemAbstractView
-    {
-    protected $CurController = NULL;
+    {   
+    /**
+     * @access protected
+     * @var array Comepay error list.
+     */	 
     
     protected $ErrorList = array(
     
@@ -63,7 +66,7 @@ class plcComepayView extends plcPaymentSystemAbstractView
     '508' => array('is_fatal' => FALSE, 'error_desc' => 'Неверный формат сообщения', 'error_com' => 'Формат сообщения не соответствует данному регламенту, т.е. не указаны обязательные для данного типа запроса поля'),
     '509' => array('is_fatal' => FALSE, 'error_desc' => 'Превышено время ожидания', 'error_com' => 'Запрос выполняется Поставщиком слишком долго'),       
     '511' => array('is_fatal' => TRUE, 'error_desc' => 'Недостаточно средств', 'error_com' => 'Недостаточно средств на балансе Оператора для осуществления операции'), 
-    '513' => array('is_fatal' => TRUE, 'error_desc' => 'Номер не принадлежит тестовой ѐмкости', 'error_com' => 'Номер счета не находится в тестовой емкости Поставщика. Используется при отладке взаимодействия'), 
+    '513' => array('is_fatal' => TRUE, 'error_desc' => 'Номер не принадлежит тестовой емкости', 'error_com' => 'Номер счета не находится в тестовой емкости Поставщика. Используется при отладке взаимодействия'), 
     '516' => array('is_fatal' => TRUE, 'error_desc' => 'Дублирование платежа', 'error_com' => 'Платеж с указанным id_payment уже добавлен и успешно обработан с <result>0</result>'),
     '517' => array('is_fatal' => TRUE, 'error_desc' => 'Домашний оператор не принимает платеж', 'error_com' => 'Домашний оператор абонента не может обработать запрос. Используется, если существует разветвленная сеть биллинговых центров с несколькими точками приема транзакций'),
     '518' => array('is_fatal' => FALSE, 'error_desc' => 'Лицевой счет абонента недоступен', 'error_com' => 'Номер абонент соответствует требованиям Поставщика, найден в базе, но операции по нему не могут совершаться в данный момент по техническим причинам'),       
@@ -81,18 +84,23 @@ class plcComepayView extends plcPaymentSystemAbstractView
        
     /* Core methods starts here */
     
-    public function __construct($usrController) 
-        {
-        $this->CurController = $usrController;
-        }
-        
-    public function __destruct()
-        { 
-        }
-    
-    /* Core methods starts here */
+    /* Core methods ends here */
  
     /* Get methods starts here */
+        
+    /**
+     * Function that returns related information for corresponding error code.
+     * 
+     * Simple function that returns related information for corresponding error code. 
+     * 
+     * @access public
+     * 
+     * @param string error code
+     * @param array additional params
+     * 
+     * @return string|bool related error information on success and FALSE on fail. 
+     *                                      
+     */          
         
     public function GetErrorResponse($usrErrCode = '', $usrParams = array())
         {    
@@ -253,7 +261,7 @@ class plcComepayView extends plcPaymentSystemAbstractView
         $tmpResp .= '<response>';
         $tmpResp .= '<operation>payment</operation>';
         $tmpResp .= '<id_payment>'.$_GET['id_payment'].'</id_payment>';
-        $tmpResp .= '<ext-id_payment>'.$this->CurController->GetTransId().'</ext-id_payment>';
+        $tmpResp .= '<ext-id_payment>'.$this->Controller->GetTransId().'</ext-id_payment>';
         $tmpResp .= '<date>'.$_GET['date'].'</date>';
         $tmpResp .= '<account>'.$_GET['account'].'</account>';
         $tmpResp .= '<sum>'.$_GET['sum'].'</sum>';
@@ -262,6 +270,19 @@ class plcComepayView extends plcPaymentSystemAbstractView
 
         return $tmpResp;           
         }
+        
+    /**
+     * 
+     * Function that generates and returns response for the server of check operation.
+     * 
+     * Simple function that generates and returns response for the server of check operation.
+     * The response is generated as XML data.
+     * 
+     * @access public
+     * 
+     * @return string XML response.
+     *                                        
+     */  
         
      public function GetCheckResponse()
         {

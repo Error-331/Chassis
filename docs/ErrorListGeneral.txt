@@ -473,3 +473,48 @@ Usert provided zero-length text.
 10103
 Invalid search key.
 User provided invalid search key or it is empty.
+
+Caching classes (11101 - 11nnn)
+====================================
+
+plcSmplFileCache (11101 - 111nn)
+
+11101
+Cache folder parameter must be a string.
+User provided invalid cache folder path parameter.
+
+11102
+Cache folder is not readable.
+Cache folder must be readable in order to be able load cached content.
+
+11103
+Cache folder is not writable.
+Cache folder must be writable in order to be able to save cached content.
+
+11104
+Cache lifetime parameter is not a string.
+User provided invalid cache lifetime parameter.
+
+11105
+Cache lifetime parameter is not valid.
+Cache lifetime parameter must follow strtotime() php function format.
+
+11106
+Cache storage folder is not set.
+Can not work with cache without cache storage directory.
+
+11107
+Can not get date of creation of the file.
+'Creation date of the file "'.$tmpCDir.'" is undefined.'
+
+11108
+Cache file not found.
+Cache file for the URL "'.$this->GetCurrentURL().'" is not found.
+
+11109
+Cache file is not readable.
+Cache file for the URL "'.$this->GetCurrentURL().'" is not readable.
+
+11110
+Cache lifetime is not set.
+Can not work with cache without cache lifetime duration value.

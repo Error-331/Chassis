@@ -1,0 +1,28 @@
+Template system classes (11101 - 1nnnn)
+======================================
+
+plcSmplTmplPage (11101 - 111nn)
+
+11101
+Page path parameter is not a string.
+Page path parameter must be string (pointing to xhtml template).
+
+11102
+Page template is not readable or does not exist.
+Page template is not readable: "'.$usrPath.'"
+
+11103
+Template variables parameter is not array.
+Template variables parameter must be array.
+
+11104
+Cannot open XHTML template.
+Error while opening XHTML template: "'.$this->PagePath.'".
+
+11105
+Contents of the loop tag is empty.
+No inner XML for the chassis loop tag.
+
+11106
+Cannot read XML from string.
+Invalid XML data or empty string.

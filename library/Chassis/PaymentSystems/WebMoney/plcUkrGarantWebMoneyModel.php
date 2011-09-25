@@ -120,6 +120,19 @@ class plcUkrGarantWebMoneyModel extends plcPaymentSystemAbstractModel
     
     /* Core methods starts here */
     
+    /**
+     * Main constructor function.
+     * 
+     * Main constructor function initialises the work of the object.
+     * 
+     * @access public
+     * 
+     * @param object controller object
+     * 
+     * @throws plcChassisException, plcPaymentSystemException  
+     *                                      
+     */     
+    
     public function __construct($usrController)
         {
         parent::__construct($usrController);  

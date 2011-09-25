@@ -44,6 +44,9 @@
  * default_sqlite_file - default sqlite database file
  * default_sqlite_flags - default sqlite database flags
  * default_sqlite_encryptionkey - default sqlite encryption key
+ * 
+ * default_cache_folder - default folder for cache storage 
+ * default_cache_lifetime - default cache lifetime duration
  *     
  * @subpackage plcGlobRegistry
  * @author Selihov Sergei Stanislavovich <red331@mail.ru>

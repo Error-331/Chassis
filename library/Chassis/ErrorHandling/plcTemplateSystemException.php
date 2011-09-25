@@ -13,7 +13,7 @@
  * obtain it through the world-wide-web, please send an email
  * to red331@mail.ru so we can send you a copy immediately.    
  * 
- * Class plcPaymentSystemException is a part of PHP framework - Chassis.   
+ * Class plcTemplateSystemException is a part of PHP framework - Chassis.   
  * 
  * @package     Chassis
  * @author      Selihov Sergei Stanislavovich <red331@mail.ru> 
@@ -30,17 +30,17 @@
  */
  
 /**
- * Documents the plcPaymentSystemException class.
+ * Documents the plcTemplateSystemException class.
  * 
- * Following class is base representation of error for payment system based classes. 
+ * Following class is base representation of error for template system based classes. 
  *   
- * @subpackage plcWebMoneyException
+ * @subpackage plcTemplateSystemException
  * @author Selihov Sergei Stanislavovich <red331@mail.ru>   
  */
 
 require_once('Chassis/ErrorHandling/plcChassisException.php'); 
  
-class plcPaymentSystemException extends plcChassisException
+class plcTemplateSystemException extends plcChassisException
     {
     }
 

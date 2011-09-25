@@ -1,0 +1,274 @@
+plcSmplTmplPage tutorial
+========================
+
+Simple template render example (var and loop template variable types used) with caching
+---------------------------------------------------------------------------------------
+
+The code:
+---------
+
+plcGlobRegistry::SetOption('default_cache_folder', 'Cache');    
+plcGlobRegistry::SetOption('default_cache_lifetime', '+20 seconds'); 
+    
+$tmpVars = array('Chas1' => 'Val1', 
+                 'Chas2' => 'Val2',
+                 'Chas3' => array(array('Chas3_1' => 'Loop1_1', 'Chas3_2' => 'Loop1_2'),
+                                  array('Chas3_1' => 'Loop2_1', 'Chas3_2' => 'Loop2_2')));    
+    
+$tmpPage = new plcSmplTmplPage('templates/test.xhtml', $tmpVars, TRUE); 
+$tmpPage->Display();
+
+The template:
+-------------
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>TODO supply a title</title>
+ </head>
+ <body>
+  <Chassis type="var" name="Chas1"></Chassis>
+
+  <Chassis name="Chas2"/>
+  
+  <div id="Div1">Test content1</div>
+  
+  <br/>
+
+  <div id="Div2">Test content2</div>
+  
+  <chassis type="loop" name="Chas3">
+   <div id="Div3" class="St1">
+    <chassis name="Chas3_1"/>    
+   </div> 
+      
+   <br/>
+   
+   <div id="Div4" class="St1">    
+    <chassis name="Chas3_2"/>    
+   </div>    
+  </chassis>    
+        
+ </body>
+</html>
+
+Simple template render example (loop, loop_odd, loop_even, bool and replace template variable types used)
+---------------------------------------------------------------------------------------------------------
+
+The code:
+---------
+
+$tmpDBConnector = NULL;
+$tmpPage = NULL;
+
+$tmpResults = FALSE;
+$tmpVars = NULL;
+
+$tmpLimitStart = 0;
+$tmpLimNext = 0;
+$tmpLimPrev = 0;
+
+if (isset($_GET['start']) === TRUE) {$tmpLimitStart = $_GET['start'];}
+
+$tmpLimNext = $tmpLimitStart + 10;
+$tmpLimPrev = $tmpLimitStart - 10;
+
+if ($tmpLimPrev < 0) {$tmpLimPrev = 0;}
+
+$tmpDBConnector = plcMySQLDBConnector::GetInstance();
+$tmpDBConnector->ConnectToDB('localhost', 'root', '');
+$tmpDBConnector->SetDatabaseName('artica');
+
+$tmpDBConnector->SetQuery('SELECT 
+                           product.id, 
+                           product.quantity, 
+                           product.price,
+                           catalog.category_id,
+                           hurl.key_word
+                           FROM 
+                           `catalog_product` AS product,
+                           `catalog_product_category` AS catalog,
+                           `catalog_hurl` AS hurl
+                           WHERE
+                           product.id = catalog.product_id AND
+                           hurl.key_type = "p" AND
+                           product.id = hurl.key_id
+                           GROUP BY product.id
+                           LIMIT '.$tmpLimitStart.', 10');
+
+$tmpResults = $tmpDBConnector->GetResultAssoc();
+
+if ($tmpResults === FALSE)
+    {
+    $tmpVars = array('TableShow' => FALSE, 
+                     'Warning' => TRUE,
+                     'NavPrev' => array('tag' => 'a', 'content' => 'Prev results', 'is_simple' => FALSE, 'attributes' => array('id' => 'NavPrev', 'href' => '?start='.$tmpLimPrev)),
+                     'NavNext' => array('tag' => 'a', 'content' => 'Next results', 'is_simple' => FALSE, 'attributes' => array('id' => 'NavNext', 'href' => '?start='.$tmpLimNext)),
+                    );
+    }
+else
+    {
+    $tmpVars = array('TableShow' => TRUE, 
+                     'Table' => $tmpResults,
+                     'NavPrev' => array('tag' => 'a', 'content' => 'Prev results', 'is_simple' => FALSE, 'attributes' => array('id' => 'NavPrev', 'href' => '?start='.$tmpLimPrev)),
+                     'NavNext' => array('tag' => 'a', 'content' => 'Next results', 'is_simple' => FALSE, 'attributes' => array('id' => 'NavNext', 'href' => '?start='.$tmpLimNext)),
+                     'Warning' => FALSE);
+    }    
+
+$tmpPage = new plcSmplTmplPage('templates/test.xhtml', $tmpVars, FALSE); 
+$tmpPage->Display();
+
+The template:
+-------------
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>TODO supply a title</title>
+  
+  <style>
+   table#PriceListTbl
+    {
+    width: auto; 
+    height: 1px; 
+     
+    table-layout: auto; 
+    border-collapse: collapse; 
+    
+    margin-left: 20px; 
+    border: 1px solid black; 
+    }
+    
+   table#PriceListTbl th, td
+    { 
+    overflow: hidden; 
+    visibility: visible;    
+        
+    width: 50px; 
+    height: 1px;
+         
+    border: 1px solid black; 
+    padding: 5px; 
+    
+    text-align: center; 
+    vertical-align: middle; 
+    text-indent: 5px;
+    }
+    
+   table#PriceListTbl th
+    {
+    background-color: gold;  
+    }
+    
+   tr.OddRow td
+    {
+    background-color: white;   
+    }
+    
+   tr.EvenRow td
+    {
+    background-color: gray;   
+    }    
+   
+   div#WarningCont
+    {
+    margin: 20px 0 0 0;
+    
+    font-size: 20px;
+    font-weight: bold;
+    color: red;
+    }
+    
+  div#NavCont
+    {
+    overflow: auto;
+    width: 200px;
+    
+    margin: 20px 0 0 20px;
+    }
+    
+  a#NavPrev
+    {
+    display: block;
+    float: left;
+    }
+    
+  a#NavNext
+    {
+    display: block;
+    float: right;
+    }    
+  </style>    
+  
+ </head>
+ <body>
+     
+  <chassis type="bool" name="TableShow">    
+   <div id="TableCont">
+    <table cellspacing="0" cellpadding="0" border="0" id="PriceListTbl">
+     <thead>
+      <tr>
+       <th>ID</th>
+       <th>Quantity</th>
+       <th>Price</th>
+       <th>Category ID</th>
+       <th>Key word</th>
+      </tr>    
+     </thead>
+    
+     <tfoot>
+      <tr>
+       <th>ID</th>
+       <th>Quantity</th>
+       <th>Price</th>
+       <th>Category ID</th>
+       <th>Key word</th>
+      </tr>                
+     </tfoot>    
+    
+     <tbody>
+      <chassis type="loop" name="Table">
+          
+       <chassis type="loop_odd">    
+        <tr class="OddRow">
+         <td><chassis name="id"/></td> 
+         <td><chassis name="quantity"/></td>
+         <td><chassis name="price"/></td>
+         <td><chassis name="category_id"/></td>
+         <td><chassis name="key_word"/></td>  
+        </tr> 
+       </chassis> 
+         
+       <chassis type="loop_even">    
+        <tr class="EvenRow">
+         <td><chassis name="id"/></td> 
+         <td><chassis name="quantity"/></td>
+         <td><chassis name="price"/></td>
+         <td><chassis name="category_id"/></td>
+         <td><chassis name="key_word"/></td>  
+        </tr> 
+       </chassis>          
+         
+      </chassis>        
+        
+     </tbody>    
+    
+    </table>       
+   </div> 
+  </chassis> 
+         
+  <chassis type="bool" name="Warning">   
+   <div id="WarningCont">
+    Sorry no records found.     
+   </div>    
+  </chassis>           
+         
+  <div id="NavCont">   
+   <chassis type="replace" name="NavPrev"/>  
+   <chassis type="replace" name="NavNext"/>    
+  </div>    
+               
+ </body>
+</html>

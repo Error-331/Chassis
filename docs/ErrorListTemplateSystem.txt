@@ -26,3 +26,7 @@ No inner XML for the chassis loop tag.
 11106
 Cannot read XML from string.
 Invalid XML data or empty string.
+
+11107
+Error while processing "replace_var" tag.
+Undefined error while processing "replace_var" tag.

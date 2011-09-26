@@ -71,6 +71,24 @@
  * is_closing - indicates whether it is a closing tag or not (optional);
  * attributes - array of tag attributes (optional);
  * 
+ * Tag var replace
+ * ---------------
+ * 
+ * Replaces special variables inside chassis tag with corresponding user values.
+ * 
+ * Tag notation:
+ * 
+ * <chassis type="replace_var" name="Chas1">
+ * {CHASS_VAR_1}
+ * ...
+ * {CHASS_VAR_2}
+ * {CHASS_VAR_3}
+ * </chassis> 
+ * 
+ * User parameters: 
+ * 
+ * User is required to set custom values (as array) for the corresponding name (attribute name).
+ * 
  * Bool tag
  * --------
  * 
@@ -262,6 +280,9 @@ class plcSmplTmplPage
         $tmpContents = '';
         $tmpAttrs = array();
         
+        $tmpParams = array();
+        $tmpVars = array();
+        
         $Counter1 = 0;
         
         if ($usrXMLReader->nodeType == XMLReader::ELEMENT)
@@ -393,6 +414,32 @@ class plcSmplTmplPage
                         }
                     }
                     
+                break;
+                
+                case 'replace_var':
+                if (array_key_exists('name', $tmpAttrs) === FALSE) {break;} 
+                if (array_key_exists($tmpAttrs['name'], $usrVars) === FALSE) {break;}     
+               
+                foreach($usrVars[$tmpAttrs['name']] as $tmpKey => $tmpVal)
+                    {
+                    $tmpParams[] = '/\{'.strtoupper($tmpKey).'\}/';
+                    $tmpVars[] = $tmpVal;
+                    }
+                 
+                $tmpParams[] = '/\{([a-zA-Z0-9]|\_)*\}/';
+                $tmpVars[] = '';    
+                    
+                $tmpContents = preg_replace($tmpParams, $tmpVars, $tmpContents);
+                
+                if (is_null($tmpContents) === TRUE)
+                    {
+                    throw new plcTemplateSystemException('Error while processing "replace_var" tag.', 11107, null, 'Undefined error while processing "replace_var" tag.');
+                    }
+                
+                $tmpXMLReader = new XMLReader();
+                $tmpReadRes = @$tmpXMLReader->xml($tmpContents, 'UTF-8', LIBXML_NOERROR|LIBXML_NOWARNING);
+                $this->Display($tmpXMLReader);
+                $tmpXMLReader->close();  
                 break;    
                 
                 case 'var':

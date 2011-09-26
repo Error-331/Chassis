@@ -25,7 +25,7 @@ The template:
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
  <head>
-  <title>TODO supply a title</title>
+  <title>Template test</title>
  </head>
  <body>
   <Chassis type="var" name="Chas1"></Chassis>
@@ -77,7 +77,7 @@ $tmpLimPrev = $tmpLimitStart - 10;
 if ($tmpLimPrev < 0) {$tmpLimPrev = 0;}
 
 $tmpDBConnector = plcMySQLDBConnector::GetInstance();
-$tmpDBConnector->ConnectToDB('localhost', 'root', '');
+$tmpDBConnector->ConnectToDB('localhost', 'root', 'gfdFD');
 $tmpDBConnector->SetDatabaseName('artica');
 
 $tmpDBConnector->SetQuery('SELECT 
@@ -126,7 +126,7 @@ The template:
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
  <head>
-  <title>TODO supply a title</title>
+  <title>Template test</title>
   
   <style>
    table#PriceListTbl
@@ -270,5 +270,38 @@ The template:
    <chassis type="replace" name="NavNext"/>    
   </div>    
                
+ </body>
+</html>
+
+Simple template render example (replace_var template variable types used) with caching
+--------------------------------------------------------------------------------------
+
+The code:
+---------
+
+plcGlobRegistry::SetOption('default_cache_folder', 'testing');    
+plcGlobRegistry::SetOption('default_cache_lifetime', '+10 seconds'); 
+    
+$tmpVars = array('Chas1' => array('CHASS_VAR_1' => 'Val_1', 'CHASS_VAR_2' => 'Val_2'));    
+    
+$tmpPage = new plcSmplTmplPage('templates/test.xhtml', $tmpVars, TRUE); 
+$tmpPage->Display();
+
+The template:
+-------------
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>Template test</title>
+ </head>
+ <body>
+  <Chassis type="replace_var" name="Chas1">
+   {CHASS_VAR_1}
+   <br/>
+   {CHASS_VAR_2}
+   {CHASS_VAR_3}
+  </Chassis>        
  </body>
 </html>

@@ -13,7 +13,7 @@
  * obtain it through the world-wide-web, please send an email
  * to red331@mail.ru so we can send you a copy immediately.   
  * 
- * Class plcUkrGarantWebMoneyView is a part of PHP framework - Chassis.   
+ * Class plcWebMoneyModel is a part of PHP framework - Chassis.   
  * 
  * @package     Chassis
  * @author      Selihov Sergei Stanislavovich <red331@mail.ru> 
@@ -37,21 +37,48 @@
  */
  
 /**
- * Documents the plcUkrGarantWebMoneyView class.
+ * Documents the plcWebMoneyModel class.
  * 
- * Following class is a main view class for work with webmoney payment system through UkrGarant
- * gate system.
+ * Following class is a main model class for work with webmoney payment system.
  *    
- * @subpackage plcUkrGarantWebMoneyView
+ * @subpackage plcUkrGarantWebMoneyModel
  * @author Selihov Sergei Stanislavovich <red331@mail.ru>   
  */
 
 require_once('Chassis/ErrorHandling/plcPaymentSystemException.php');
-require_once('Chassis/PaymentSystems/plcPaymentSystemAbstractView.php');
+require_once('Chassis/PaymentSystems/plcPaymentSystemAbstractModel.php');
 
-class plcUkrGarantWebMoneyView extends plcPaymentSystemAbstractView
-    {
+class plcWebMoneyModel extends plcPaymentSystemAbstractModel
+    {     
+    /* Core methods starts here */
     
+    /**
+     * Main constructor function.
+     * 
+     * Main constructor function initialises the work of the object.
+     * 
+     * @access public
+     * 
+     * @param object controller object
+     * 
+     * @throws plcChassisException, plcPaymentSystemException  
+     *                                      
+     */     
+    
+    public function __construct($usrController)
+        {
+        parent::__construct($usrController);          
+        }
+        
+    public function __destruct()
+        {
+        if(is_null($this->CURLRes) !== TRUE)
+                {
+		curl_close($this->CURLRes);
+                }            
+        }        
+        
+    /* Core methods ends here */    
     }
-
+    
 ?>

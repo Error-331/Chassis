@@ -13,7 +13,7 @@
  * obtain it through the world-wide-web, please send an email
  * to red331@mail.ru so we can send you a copy immediately.   
  * 
- * Class plcUkrGarantWebMoneyView is a part of PHP framework - Chassis.   
+ * Class plcWebMoneyView is a part of PHP framework - Chassis.   
  * 
  * @package     Chassis
  * @author      Selihov Sergei Stanislavovich <red331@mail.ru> 
@@ -37,19 +37,18 @@
  */
  
 /**
- * Documents the plcUkrGarantWebMoneyView class.
+ * Documents the plcWebMoneyView class.
  * 
- * Following class is a main view class for work with webmoney payment system through UkrGarant
- * gate system.
+ * Following class is a main view class for work with webmoney payment system.
  *    
- * @subpackage plcUkrGarantWebMoneyView
+ * @subpackage plcWebMoneyView
  * @author Selihov Sergei Stanislavovich <red331@mail.ru>   
  */
 
 require_once('Chassis/ErrorHandling/plcPaymentSystemException.php');
 require_once('Chassis/PaymentSystems/plcPaymentSystemAbstractView.php');
 
-class plcUkrGarantWebMoneyView extends plcPaymentSystemAbstractView
+class plcWebMoneyView extends plcPaymentSystemAbstractView
     {
     
     }

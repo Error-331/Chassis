@@ -1,0 +1,10 @@
+plcEncoderMD5 tutorial
+======================
+
+Encode example
+--------------
+
+$tmpEncryptor = new plcEncoderMD5('Test message!'); 
+$tmpEncData = $tmpEncryptor->Encode();
+
+var_dump($tmpEncData); 

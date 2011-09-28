@@ -153,6 +153,8 @@ abstract class plcPaymentSystemAbstractController
      * @param int shop id (the payment reciever id)
      * @param string path to the main configuration ini file
      * @param string path to the payment system configuration ini file
+     * 
+     * @throws plcPaymentSystemException
      *                                      
      */     
     

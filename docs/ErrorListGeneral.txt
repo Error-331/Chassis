@@ -422,11 +422,23 @@ Maximum height parametre is not specified or empty.
 Encription classes (8101 - 8nnn)
 ================================
 
-plcEncoderMD5  (8101 - 81nn)
+plcEncoderAbstract (8101 - 81nn) 
 
 8101
+User data is not set.
+Can not prepare user data without actual user data.
+
+8102
 Prepared data is absent.
 Data for encoding process is not yet set.
+
+plcEncoderMD5  (8201 - 82nn)
+plcEncoderMD4  (8301 - 83nn)
+
+8301
+Fail to initialize class.
+Can not initialize class.
+
 
 XML classes (9101 - 9nnn)
 =========================

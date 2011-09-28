@@ -39,213 +39,56 @@
  */
  
 require_once('Chassis/ErrorHandling/plcChassisException.php');
+require_once('Chassis/Encription/plcEncoderAbstract.php');
 
-class plcEncoderMD5
-  {  
-  /**
-   * @access protected
-   * @var array data to be used in encoding process 
-   */	  
-  
-  protected $CurData; 
-  
-  /**
-   * @access protected
-   * @var string that will be used in encoding process and is composed of user data and various random info 
-   */	  
-  
-  protected $CurPreparedData; 
-  
-  
-  /**
-   * @access protected
-   * @var bool indicates whether to use or not to use random number in encoding process
-   */	  
-  
-  protected $UseRndNum;
-  
-  /**
-   * @access protected
-   * @var bool indicates whether to use or not to use timestamp in encoding process
-   */	  
-  
-  protected $UseTime;  
-  
-  /* Core functions starts here */
-  
-  public function __construct()
-    {
-    $this->CurData = FALSE;
-    $this->CurPreparedData = FALSE;
-    
-    $this->UseRndNum = FALSE;
-    $this->UseTime = FALSE;
-    }
-    
-  /**
-   * Function that prepares data for encoding process.
-   * 
-   * This function add various random data to the user specified data and converts it to a string for feature use in 
-   * encoding process. 
-   *        
-   * @access protected 
-   * 
-   * @return bool TRUE on succesfull preparation and FALSE on fail.       
-   *  
-   * @see plcEncoderMD5::SetUseRndNum()
-   * @see plcEncoderMD5::SetUseTime()     
-   *                                   
-   */ 
-    
-  protected function PrepareData()
+class plcEncoderMD5 extends plcEncoderAbstract
     {    
-    if (empty($this->CurData) === TRUE)
-      {
-      return FALSE;
-      }
-      
-    foreach ($this->CurData as $DataPart)
-      {
-      $this->CurPreparedData .= $DataPart;
-      }
-      
-    if ($this->UseRndNum === TRUE)
-      {
-      $this->CurPreparedData .= rand(1, 100);
-      }
-      
-    if ($this->UseTime === TRUE)
-      {
-      $this->CurPreparedData .= time();
-      }
-      
-    return TRUE;
-    } 
+    /* Core methods starts here */
     
-  /**
-   * Function that encodes data using md5 algorithm and returns the result.
-   * 
-   * Simple function that encodes data using md5 algorithm and returns the result.
-   *        
-   * @access public 
-   * 
-   * @throws plcChassisException       
-   * 
-   * @return string string of encoded data on success.       
-   *                            
-   */
+    /**
+     * Main constructor function.
+     * 
+     * Main constructor function initialises the work of the object.
+     * 
+     * @access public
+     * 
+     * @param mixed user data that will be encoded.
+     * @param bool indicates whether to use random number in encoding process.
+     * @param bool indicates whether to use current timestamp in encoding process.
+     *                                     
+     */     
   
-  public function Encode()
-    {    
-    $tmpResult = '';
+    public function __construct($usrData = array(), $usrUseRndNum = FALSE, $useTime = FALSE)
+        {
+        parent::__construct($usrData, $usrUseRndNum, $useTime);
+        }
+        
+    public function __destruct()
+        {        
+        }        
     
-    if ($this->CurPreparedData === FALSE)
-      {
-      throw new plcChassisException('Prepared data is absent.', 8101, null ,'Data for encoding process is not yet set.');
-      }
-     
-    $tmpResult = md5($this->CurPreparedData);
-    
-    return $tmpResult;
-    }
-    
-  /* Core functions ends here */
+    /**
+     * Function that encodes data using md5 algorithm and returns the result.
+     * 
+     * Simple function that encodes data using md5 algorithm and returns the result.
+     *        
+     * @access public 
+     * 
+     * @throws plcChassisException       
+     * 
+     * @return string of encoded data on success.       
+     *                            
+     */
   
-  /* Get functions starts here */
-  
-  /**
-   * Function that returns data that will be used in encoding process.
-   * 
-   * Simple function that returns data(previously set by user) that will be used in encoding process.
-   *        
-   * @access public 
-   * 
-   * @return array|bool array of data was already been set and FALSE if it was not yet set.       
-   *                            
-   */ 
+    public function Encode()
+        {    
+        parent::Encode();
 
-  public function GetData()
-    {
-    return $this->CurData;
-    }
+        $tmpResult = md5($this->CurPreparedData);   
+        return $tmpResult;
+        }
     
-  /**
-   * Function that returns prepared data that will be used in encoding process.
-   * 
-   * Simple function that returns data(previously set by user and with additional random info) that will be used in 
-   * encoding process.
-   *        
-   * @access public 
-   * 
-   * @return string|bool string of data if it was previously set and FALSE if it was not yet set.       
-   *  
-   * @see plcEncoderMD5::PrepareData() 
-   *                                   
-   */ 
-
-  public function GetPreparedData()
-    {
-    return $this->CurPreparedData;
+    /* Core methods ends here */
     }
-  
-  /* Get functions ends here */
-  
-  /* Set functions starts here */
-  
-  /**
-   * Function that sets data that will be future used in encoding process.
-   * 
-   * Simple function that stores data that will be future used in encoding process.
-   *        
-   * @access public 
-   * 
-   * @param array plain array with user data.    
-   *                            
-   */ 
-  
-  public function SetData($usrDataArray)
-    {
-    $this->CurData = $usrDataArray;
-    $this->PrepareData();
-    }
-    
-  /**
-   * Function that sets flag that indicates whether random numbers will be used in preparation of user data.
-   * 
-   * Function that sets flag that indicates whether random numbers will be used in preparation of user data.
-   *        
-   * @access public 
-   * 
-   * @param bool sets flag to TRUE or FALSE .
-   * 
-   * @see plcEncoderMD5::PrepareData()           
-   *                            
-   */ 
-    
-  public function SetUseRndNum($usrState)
-    {
-    $this->UseRndNum = $usrState;
-    }
-    
-  /**
-   * Function that sets flag that indicates whether time stamp will be used in preparation of user data.
-   * 
-   * Function that sets flag that indicates whether time stamp will be used in preparation of user data.
-   *        
-   * @access public 
-   * 
-   * @param bool sets flag to TRUE or FALSE .
-   * 
-   * @see plcEncoderMD5::PrepareData()           
-   *                            
-   */ 
-    
-  public function SetUseTime($usrState)
-    {
-    $this->UseTime = $usrState;
-    }
-  
-  /* Set functions ends here */
-  }
 
 ?>
